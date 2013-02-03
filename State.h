@@ -18,7 +18,6 @@ class State : public StateParent {
 public:
 	State(StateParent* parent, StateContext* context);
 	State(StateParent* parent, StateContext* context, State *childState);
-	virtual ~State();
 
 	/**
 	 * Accept an event and a context; transitions context to a new

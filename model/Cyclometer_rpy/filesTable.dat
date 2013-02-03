@@ -1,0 +1,10 @@
+I-Logix-RPY-Archive version 8.7.1 * 5066837
+
+- filesTable = { IRPYRawContainer 
+	- size = 3;
+	- value = "Cyclometer.rpy" ""
+	"Cyclometer_rpy\\Default.sbs" "Default"
+	"Cyclometer_rpy\\DefaultComponent.cmp" "DefaultComponent"
+	
+}
+

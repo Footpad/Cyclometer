@@ -16,4 +16,25 @@ typedef int Event;
 // Function pointer for transition actions.
 typedef void (*Action)(void);
 
+// Enumeration of event types in the system.
+enum EventTypes {
+	// Used in anonymous transitions.
+	evNoEvent = 0,
+
+	// Events internal to the system.
+	evFullReset,
+
+	// External push button events.
+	evSetDepressed,
+	evSetReleased,
+	evModeDepressed,
+	evModeReleased,
+	evStartStopDepressed,
+	evStartStopReleased,
+	evModeStartStopDepressed,
+	evModeStartStopReleased,
+	evAllDepressed,
+	evAllReleased
+};
+
 #endif /* COMMON_H_ */

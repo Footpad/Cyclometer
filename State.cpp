@@ -23,8 +23,6 @@ context(_context) {
 	childState = _childState;
 }
 
-State::~State() {}
-
 StateParent* State::getParent() {
 	return parent;
 }
