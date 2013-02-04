@@ -9,26 +9,27 @@
 
 PushbuttonScanner::PushbuttonScanner(uintptr_t input_port)
 :input_port_handle(input_port)
-,killThread(false)
-{ }
+{
+	killThread = false;
+}
 
 PushbuttonScanner::~PushbuttonScanner() { }
 
 void* PushbuttonScanner::running(void* args) {
 	PushbuttonScanner self = *((PushbuttonScanner*)args);
 
-	char lastRead = in8(input_port_handle);
+	char lastRead = in8(self.input_port_handle);
 	char intermed;
 
 	while(!self.killThread) {
 		//Wait for there to be a change on the pushbutton inputs.
-		while(lastRead == in8(input_port_handle)) {
+		while(lastRead == in8(self.input_port_handle)) {
 			usleep(POLL_PERIOD);
 		}
 		//when a change is detected, wait for the inputs to settle.
 		usleep(DEBOUNCE_PERIOD);
 		//then save a copy of the inputs.
-		intermed = in8(input_port_handle);
+		intermed = in8(self.input_port_handle);
 
 		//determine what has occurred by comparing the intermediate and the last read value.
 
@@ -37,6 +38,8 @@ void* PushbuttonScanner::running(void* args) {
 		//save the last value read
 		lastRead = intermed;
 	}
+
+	return NULL;
 }
 
 void PushbuttonScanner::start() {

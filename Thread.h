@@ -10,8 +10,6 @@
 
 #include <pthread.h>
 
-#define POLL_PERIOD (500)
-
 class Thread {
 public:
 	Thread();

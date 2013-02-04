@@ -12,6 +12,8 @@
 #include <stdint.h>       /* for uintptr_t */
 #include <hw/inout.h>     /* for in*() and out*() functions */
 
+#include "Thread.h"
+
 #define POLL_PERIOD (1000)
 #define DEBOUNCE_PERIOD (200000)
 
