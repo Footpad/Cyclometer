@@ -12,15 +12,26 @@
 #include <stdint.h>       /* for uintptr_t */
 #include <hw/inout.h>     /* for in*() and out*() functions */
 
-#include "Thread.h"
+#include <stdio.h>
 
-#define POLL_PERIOD (1000)
+#include "Thread.h"
+#include "Common.h"
+#include "EventCenter.h"
+
+#define POLL_PERIOD (5000)
 #define DEBOUNCE_PERIOD (200000)
 
+#define LOW_MASK (0b00001111)
 
-#define SET_BUTTON_MASK 		(0b00000001)
-#define STARTSTOP_BUTTON_MASK 	(0b00000010)
-#define MODE_BUTTON_MASK 		(0b00000100)
+#define MASK_ARRAY_SIZE (3)
+static const char MASK_ARRAY[] = {
+		//SET button
+		(0b00000001),
+		//START/STOP button
+		(0b00000010),
+		//MODE button
+		(0b00000100),
+};
 
 
 class PushbuttonScanner: public Thread {

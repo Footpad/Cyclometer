@@ -10,18 +10,28 @@
 
 #include "DataProviderImpl.h"
 
+#include "PushbuttonScanTester.h"
+#include "PushbuttonScanner.h"
+
 #include "Display.h"
 
 // DAQ Port addresses
 #define DATA_BASE_ADDRESS (0x280)
 #define DATA_PORT_A (DATA_BASE_ADDRESS + 8)
 #define DATA_PORT_B (DATA_BASE_ADDRESS + 9)
+#define DATA_PORT_C (DATA_BASE_ADDRESS + 10)
 #define DATA_DIRECTION (DATA_BASE_ADDRESS + 11)
 
 #define PORT_LENGTH (1)
 
-// Sets A and B to outputs...
-#define SET_DIRECTION (0b10000000)
+// Sets A and B to outputs and C to input
+#define SET_DIRECTION (0b10001001)
+
+// Declare the hardware port handles they are used...
+uintptr_t daq_dir_handle;
+uintptr_t daq_porta_handle;
+uintptr_t daq_portb_handle;
+uintptr_t daq_portc_handle;
 
 /**
  * Get root permissions to get access to hardware...
@@ -50,24 +60,7 @@ uintptr_t getHandle(int address) {
 	return ret;
 }
 
-int main(int argc, char *argv[]) {
-	// Declare the hardware port handles they are used...
-	uintptr_t daq_dir_handle;
-	uintptr_t daq_porta_handle;
-	uintptr_t daq_portb_handle;
-
-	/* Give this thread root permissions to access the hardware */
-	getPermissions();
-
-	/* Get a handle to Port A for controller inputs */
-	daq_porta_handle = getHandle(DATA_PORT_A);
-	/* Get a handle to Port B for controller outputs */
-	daq_portb_handle = getHandle(DATA_PORT_B);
-	/* Get a handle for the direction register to set Port A and B */
-	daq_dir_handle = getHandle(DATA_DIRECTION);
-	// set the data directions...
-	out8(daq_dir_handle, SET_DIRECTION);
-
+void displayTest() {
 	//Declare where the data is gonna come from initially...
 	DataProviderImpl dpi(1);
 	Display d(&dpi, daq_porta_handle, daq_portb_handle);
@@ -85,6 +78,37 @@ int main(int argc, char *argv[]) {
 	d.setDataProvider(&dpi2);
 
 	d.join();
+}
+
+void pushbuttonTest() {
+	PushbuttonScanner pbs(daq_portc_handle);
+	pbs.start();
+
+	PushbuttonScanTester* pbst = new PushbuttonScanTester();
+
+	pbst->start();
+	pbst->join();
+}
+
+int main(int argc, char *argv[]) {
+	/* Give this thread root permissions to access the hardware */
+	getPermissions();
+
+	/* Get a handle for the direction register to set Port A and B */
+	daq_dir_handle = getHandle(DATA_DIRECTION);
+	// set the data directions...
+	out8(daq_dir_handle, SET_DIRECTION);
+
+	/* Get a handle to Port A for controller outputs 1 */
+	daq_porta_handle = getHandle(DATA_PORT_A);
+	/* Get a handle to Port B for controller outputs 2 */
+	daq_portb_handle = getHandle(DATA_PORT_B);
+	/* Get a handle to Port C for controller inputs */
+	daq_portc_handle = getHandle(DATA_PORT_C);
+
+	//displayTest();
+
+	pushbuttonTest();
 
 	return EXIT_SUCCESS;
 }
