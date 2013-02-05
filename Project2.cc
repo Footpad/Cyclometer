@@ -60,36 +60,6 @@ uintptr_t getHandle(int address) {
 	return ret;
 }
 
-void displayTest() {
-	//Declare where the data is gonna come from initially...
-	DataProviderImpl dpi(1);
-	Display d(&dpi, daq_porta_handle, daq_portb_handle);
-
-	//Start the display
-	d.start();
-
-	//get another data provider...
-	DataProviderImpl dpi2(2);
-
-	//wait 3 seconds...
-	sleep(3);
-
-	//change up the data!
-	d.setDataProvider(&dpi2);
-
-	d.join();
-}
-
-void pushbuttonTest() {
-	PushbuttonScanner pbs(daq_portc_handle);
-	pbs.start();
-
-	PushbuttonScanTester* pbst = new PushbuttonScanTester();
-
-	pbst->start();
-	pbst->join();
-}
-
 int main(int argc, char *argv[]) {
 	/* Give this thread root permissions to access the hardware */
 	getPermissions();
@@ -106,9 +76,16 @@ int main(int argc, char *argv[]) {
 	/* Get a handle to Port C for controller inputs */
 	daq_portc_handle = getHandle(DATA_PORT_C);
 
-	//displayTest();
+	//Start the display thread.
+	Display d(NULL, daq_porta_handle, daq_portb_handle);
+	//Start the display
+	d.start();
 
-	pushbuttonTest();
+	//Start the pushbutton scanner...
+	PushbuttonScanner pbs(daq_portc_handle);
+	pbs.start();
+
+	//Start the CyclometerController
 
 	return EXIT_SUCCESS;
 }
