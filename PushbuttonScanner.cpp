@@ -32,7 +32,6 @@ void* PushbuttonScanner::running(void* args) {
 		while ((lastRead & LOW_MASK) == (in8(self.input_port_handle) & LOW_MASK)) {
 			usleep(POLL_PERIOD);
 		}
-		printf("PushbuttonScanner: input changed...\n");
 		//when a change is detected, wait for the inputs to settle.
 		usleep(DEBOUNCE_PERIOD);
 		//then save a copy of the inputs.
@@ -56,22 +55,16 @@ void* PushbuttonScanner::running(void* args) {
 
 		//if buttons were actually released...
 		if(released != 0) {
-			//if its a special combo (all or MODE+START/STOP), fire those events
-			if((released & MASK_ARRAY[0]) && (released & MASK_ARRAY[1]) && (released & MASK_ARRAY[2])) {
-				EventCenter::DefaultEventCenter().sendEvent(evAllReleased);
-			} else if(!(released & MASK_ARRAY[0]) && (released & MASK_ARRAY[1]) && (released & MASK_ARRAY[2])) {
-				EventCenter::DefaultEventCenter().sendEvent(evModeStartStopReleased);
-			} else {
-				//else fire the individual events
-				if((released & MASK_ARRAY[0])) {
-					EventCenter::DefaultEventCenter().sendEvent(evSetReleased);
-				}
-				if((released & MASK_ARRAY[1])) {
-					EventCenter::DefaultEventCenter().sendEvent(evStartStopReleased);
-				}
-				if((released & MASK_ARRAY[2])) {
-					EventCenter::DefaultEventCenter().sendEvent(evModeReleased);
-				}
+			//fire the individual events
+			if ((released & MASK_ARRAY[0])) {
+				EventCenter::DefaultEventCenter()->sendEvent(evSetReleased);
+			}
+			if ((released & MASK_ARRAY[1])) {
+				EventCenter::DefaultEventCenter()->sendEvent(
+						evStartStopReleased);
+			}
+			if ((released & MASK_ARRAY[2])) {
+				EventCenter::DefaultEventCenter()->sendEvent(evModeReleased);
 			}
 		}
 
@@ -79,19 +72,19 @@ void* PushbuttonScanner::running(void* args) {
 		if(depressed != 0) {
 			//if its a special combo (all or MODE+START/STOP), fire those events
 			if((depressed & MASK_ARRAY[0]) && (depressed & MASK_ARRAY[1]) && (depressed & MASK_ARRAY[2])) {
-				EventCenter::DefaultEventCenter().sendEvent(evAllDepressed);
+				EventCenter::DefaultEventCenter()->sendEvent(evAllDepressed);
 			} else if(!(depressed & MASK_ARRAY[0]) && (depressed & MASK_ARRAY[1]) && (depressed & MASK_ARRAY[2])) {
-				EventCenter::DefaultEventCenter().sendEvent(evModeStartStopDepressed);
+				EventCenter::DefaultEventCenter()->sendEvent(evModeStartStopDepressed);
 			} else {
 				//else fire the individual events
 				if((depressed & MASK_ARRAY[0])) {
-					EventCenter::DefaultEventCenter().sendEvent(evSetDepressed);
+					EventCenter::DefaultEventCenter()->sendEvent(evSetDepressed);
 				}
 				if((depressed & MASK_ARRAY[1])) {
-					EventCenter::DefaultEventCenter().sendEvent(evStartStopDepressed);
+					EventCenter::DefaultEventCenter()->sendEvent(evStartStopDepressed);
 				}
 				if((depressed & MASK_ARRAY[2])) {
-					EventCenter::DefaultEventCenter().sendEvent(evModeDepressed);
+					EventCenter::DefaultEventCenter()->sendEvent(evModeDepressed);
 				}
 			}
 		}

@@ -12,21 +12,20 @@ PushbuttonScanTester::PushbuttonScanTester() {}
 PushbuttonScanTester::~PushbuttonScanTester() {}
 
 void PushbuttonScanTester::start() {
-	EventCenter::DefaultEventCenter().registerContext(this);
+	EventCenter::DefaultEventCenter()->registerContext(this);
 	this->create(PushbuttonScanTester::running, this);
 }
 
 void* PushbuttonScanTester::running(void* args) {
-	PushbuttonScanTester self = *((PushbuttonScanTester*)args);
+	PushbuttonScanTester* self = (PushbuttonScanTester*)args;
 
 	printf("PBST Running\n");
 	while(true) {
-		while(self.eventQueue.size() == 0) {
+		while(self->eventQueue.size() == 0) {
 			usleep(5000);
 		}
-
-		while(self.eventQueue.size() > 0) {
-			switch (self.eventQueue.front()) {
+		while(self->eventQueue.size() > 0) {
+			switch (self->eventQueue.front()) {
 			// Used in anonymous transitions.
 			case evNoEvent:
 				printf("SCANTESTER: evNoEvent\n");
@@ -69,7 +68,7 @@ void* PushbuttonScanTester::running(void* args) {
 				break;
 			}
 
-			self.eventQueue.pop();
+			self->eventQueue.pop();
 		}
 	}
 

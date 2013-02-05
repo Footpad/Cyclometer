@@ -21,10 +21,7 @@ public:
 	 *
 	 * @return a reference to the default event center.
 	 */
-	static EventCenter& DefaultEventCenter() {
-		static EventCenter defaultEventCenter;
-		return defaultEventCenter;
-	}
+	static EventCenter* DefaultEventCenter();
 
 	/**
 	 * Register a state context to receive events.
@@ -41,7 +38,6 @@ public:
 	void sendEvent(Event event);
 
 private:
-
 	// A list of registered state contexts.
 	std::vector<StateContext*> contexts;
 };

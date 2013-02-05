@@ -15,7 +15,7 @@ cyclometer(_cyclometer) {
 }
 
 void ResetWatchdog::fullReset() {
-	EventCenter::DefaultEventCenter().sendEvent(evFullReset);
+	EventCenter::DefaultEventCenter()->sendEvent(evFullReset);
 }
 
 void ResetWatchdog::tripValuesReset() {
