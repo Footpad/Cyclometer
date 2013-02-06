@@ -15,7 +15,6 @@ public:
 	SetUnits(StateParent* parent, StateContext* context);
 
 	void accept(Event event);
-	void entryAction();
 };
 
 #endif /* SETUNITS_H_ */

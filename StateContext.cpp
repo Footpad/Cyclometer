@@ -10,6 +10,8 @@
 StateContext::StateContext() {}
 
 void StateContext::accept(Event event) {
+	// TODO: make the StateContext a thread and accept events
+	// asynchronously blocked by a semaphore on the eventQueue.
 	//eventQueue.push(event);
 	childState->accept(event);
 }

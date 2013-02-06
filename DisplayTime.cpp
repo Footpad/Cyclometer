@@ -20,6 +20,6 @@ void DisplayTime::accept(Event event) {
 	if (event == evSetDepressed) {
 		parent->doTransition(new DisplayTime(parent, context), toggleTripMode);
 	} else if (event == evModeDepressed) {
-		parent->doTransition(new DisplayTime(parent, context), NULL);
+		parent->doTransition(new DisplaySpeed(parent, context), NULL);
 	}
 }
