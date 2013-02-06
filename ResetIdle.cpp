@@ -19,7 +19,3 @@ void ResetIdle::accept(Event event) {
 		parent->doTransition(new ResetTrip(parent, context), NULL);
 	}
 }
-
-void ResetIdle::entryAction() {}
-
-void ResetIdle::exitAction() {}

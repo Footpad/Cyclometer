@@ -4,7 +4,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 	- _myState = 8192;
 	- _name = "Default";
 	- _lastID = 18;
-	- weakCGTime = 2.5.2013::22:32:42;
+	- weakCGTime = 2.6.2013::2:20:54;
 	- strongCGTime = 1.30.2013::22:27:27;
 	- AssociationElements = { IRPYRawContainer 
 		- size = 3;
@@ -82,7 +82,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 			- _id = GUID 220229d2-0945-416b-bb89-d9130d978435;
 			- _myState = 40960;
 			- _name = "TopLevel";
-			- weakCGTime = 2.3.2013::18:41:12;
+			- weakCGTime = 2.5.2013::22:32:42;
 			- strongCGTime = 1.30.2013::22:27:27;
 			- _multiplicity = "";
 			- _itsStateChart = { IHandle 
@@ -991,7 +991,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 				- _id = GUID b951dd55-3a10-4164-bc7a-af7803ced301;
 			}
 			- _lastID = 11;
-			- weakCGTime = 2.3.2013::16:37:46;
+			- weakCGTime = 2.6.2013::2:21:29;
 			- strongCGTime = 1.30.2013::21:1:38;
 			- Operations = { IRPYRawContainer 
 				- size = 11;
@@ -1241,7 +1241,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 					- _myState = 10240;
 					- _name = "statechart_0";
 					- _lastID = 36;
-					- weakCGTime = 2.3.2013::16:37:46;
+					- weakCGTime = 2.6.2013::2:21:29;
 					- strongCGTime = 1.30.2013::21:1:38;
 					- _multiplicity = "";
 					- _itsStateChart = { IHandle 
@@ -1715,13 +1715,13 @@ isFullResetDone = TRUE";
 						}
 						{ IState 
 							- _id = GUID 6f4d2440-fa30-40ba-8944-49ac3fb3afff;
-							- _name = "CircumferenceIdle";
+							- _name = "SetCircumferenceIdle";
 							- _parent = GUID b8e52ea2-ab9e-4bff-9cf9-50349ad9cb4d;
 							- _defaultTrans = ;
 						}
 						{ IState 
 							- _id = GUID ec807728-bf9f-4535-94c3-773e123492e4;
-							- _name = "IncrementCircumference";
+							- _name = "SetCircumferenceHeld";
 							- _parent = GUID b8e52ea2-ab9e-4bff-9cf9-50349ad9cb4d;
 							- _defaultTrans = ;
 							- _entryAction = { IAction 
@@ -1754,7 +1754,7 @@ isFullResetDone = TRUE";
 							- _defaultTrans = GUID de858b7c-7b49-4c5a-a1e3-ee6ac0042625;
 						}
 					}
-					- _version = 2.3.2013::11:30:17;
+					- _version = 2.5.2013::21:21:43;
 					- _baseVersion = 1.2.1990::0:0:0;
 					- _diagram = GUID 5973813e-d9ad-4cd4-91a4-a70b34e6114d;
 					- Views = { IRPYRawContainer 
@@ -1831,7 +1831,7 @@ isFullResetDone = TRUE";
 								}
 							}
 							- _name = "statechartdiagram_0";
-							- _lastModifiedTime = "2.3.2013::16:30:17";
+							- _lastModifiedTime = "2.6.2013::2:21:43";
 							- _graphicChart = { CGIStateChart 
 								- _id = GUID 519b1b98-6f74-4174-bd0c-724072183208;
 								- m_type = 0;
@@ -2026,6 +2026,9 @@ isFullResetDone = TRUE";
 									- m_polygon = 4 0 0  0 1060  1096 1060  1096 0  ;
 									- m_nNameFormat = 0;
 									- m_nIsNameFormat = 0;
+									- frameset = "<frameset rows=50%,50%>
+<frame name=ReactionsCompartment>
+<frame name=StructureCompartment>";
 									- Compartments = { IRPYRawContainer 
 										- size = 0;
 									}
@@ -2035,6 +2038,7 @@ isFullResetDone = TRUE";
 									}
 									- m_nInheritanceMask = 0;
 									- m_pDefaultComponentRelation = ;
+									- m_moveAndLineTimeStamp = 1.2.1990::0:0:0;
 								}
 								{ CGITrans 
 									- _id = GUID bdbb2bff-c1a4-4a8c-8970-70fb53480d20;
@@ -2589,6 +2593,31 @@ isFullResetDone = TRUE";
 								}
 								{ CGIState 
 									- _id = GUID bab0a1b4-e18f-4ea3-ac53-65bff4fcc6d7;
+									- _properties = { IPropertyContainer 
+										- Subjects = { IRPYRawContainer 
+											- size = 1;
+											- value = 
+											{ IPropertySubject 
+												- _Name = "General";
+												- Metaclasses = { IRPYRawContainer 
+													- size = 1;
+													- value = 
+													{ IPropertyMetaclass 
+														- _Name = "Graphics";
+														- Properties = { IRPYRawContainer 
+															- size = 1;
+															- value = 
+															{ IProperty 
+																- _Name = "FitBoxToItsTextuals";
+																- _Value = "False";
+																- _Type = Bool;
+															}
+														}
+													}
+												}
+											}
+										}
+									}
 									- m_type = 8;
 									- m_pModelObject = { IHandle 
 										- _m2Class = "IState";
@@ -2596,7 +2625,7 @@ isFullResetDone = TRUE";
 									}
 									- m_pParent = GUID e4abd951-edfc-44b3-8d5a-2834753b8331;
 									- m_name = { CGIText 
-										- m_str = "CircumferenceIdle";
+										- m_str = "SetCircumferenceIdle";
 										- m_style = "Arial" 10 0 0 0 1 ;
 										- m_color = { IColor 
 											- m_fgColor = 0;
@@ -2609,7 +2638,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.366548 0 0 0.230769 343 775 ;
+									- m_transform = 0.466192 0 0 0.230769 300.033 775 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";
@@ -2771,7 +2800,7 @@ isFullResetDone = TRUE";
 									}
 									- m_pParent = GUID e4abd951-edfc-44b3-8d5a-2834753b8331;
 									- m_name = { CGIText 
-										- m_str = "IncrementCircumference";
+										- m_str = "SetCircumferenceHeld";
 										- m_style = "Arial" 10 0 0 0 1 ;
 										- m_color = { IColor 
 											- m_fgColor = 0;
@@ -2889,7 +2918,7 @@ isFullResetDone = TRUE";
 									- m_anglePoint1 = 0 0 ;
 									- m_anglePoint2 = 0 0 ;
 									- m_line_style = 1;
-									- m_SourcePort = 160 -18 ;
+									- m_SourcePort = 218 51 ;
 									- m_TargetPort = 382 990 ;
 									- m_pInheritsFrom = { IHandle 
 										- _m2Class = "";
@@ -2970,7 +2999,7 @@ isFullResetDone = TRUE";
 									- m_anglePoint2 = 0 0 ;
 									- m_line_style = 1;
 									- m_SourcePort = 688 973 ;
-									- m_TargetPort = 891 141 ;
+									- m_TargetPort = 795 -2 ;
 									- m_pInheritsFrom = { IHandle 
 										- _m2Class = "";
 									}
@@ -3229,6 +3258,7 @@ isFullResetDone = TRUE";
 									}
 									- m_nInheritanceMask = 0;
 									- m_pDefaultComponentRelation = ;
+									- m_moveAndLineTimeStamp = 1.2.1990::0:0:0;
 								}
 								{ CGITrans 
 									- _id = GUID 32a8d203-e475-4adb-8c8e-dc36ff968c5d;

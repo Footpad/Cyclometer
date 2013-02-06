@@ -10,15 +10,17 @@
 
 #include <cassert>
 
+class StateContext;
+
 // Abstracting the type of system events.
 typedef int Event;
 
 // Function pointer for transition actions.
-typedef void (*Action)(void);
+typedef void (*Action)(StateContext*);
 
 // Enumeration of event types in the system.
 enum EventTypes {
-	// Used in anonymous transitions.
+	// Unused
 	evNoEvent = 0,
 
 	// Events internal to the system.

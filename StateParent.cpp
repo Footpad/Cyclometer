@@ -22,7 +22,8 @@ void StateParent::doTransition(State* next, Action action) {
 
 	// If there is a transition action, perform it in order.
 	if (action) {
-		action();
+		// The action is performed on the state context.
+		action(getStateContext());
 	}
 
 	// Delete the current state and make next the current state.

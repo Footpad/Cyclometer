@@ -9,6 +9,10 @@
 #include "ResetIdle.h"
 #include "ResetWatchdog.h"
 
+static void fullResetHeld(StateContext* context) {
+	((ResetWatchdog*)context)->fullReset();
+}
+
 ResetFull::ResetFull(StateParent* parent, StateContext* context) :
 TimeoutState(parent, context, 2, 0) {}
 
@@ -20,5 +24,5 @@ void ResetFull::accept(Event event) {
 
 void ResetFull::timeout() {
 	// Timing out after the 2 seconds will reset the whole cyclometer.
-	((ResetWatchdog*)context)->fullReset();
+	parent->doTransition(new ResetIdle(parent, context), fullResetHeld);
 }

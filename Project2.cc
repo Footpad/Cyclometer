@@ -15,6 +15,12 @@
 
 #include "Display.h"
 
+#include "CyclometerController.h"
+
+#include "ResetWatchdog.h"
+
+#include "EventCenter.h"
+
 // DAQ Port addresses
 #define DATA_BASE_ADDRESS (0x280)
 #define DATA_PORT_A (DATA_BASE_ADDRESS + 8)
@@ -86,6 +92,17 @@ int main(int argc, char *argv[]) {
 	pbs.start();
 
 	//Start the CyclometerController
+	CyclometerController cc;
+
+	//Start the ResetWatchdog
+	ResetWatchdog rw(&cc);
+
+	//Register all the state contexts
+	EventCenter::DefaultEventCenter()->registerContext(&rw);
+	EventCenter::DefaultEventCenter()->registerContext(&cc);
+
+	// TODO: Do we join on someone or just let the main thread loop infinitely?
+	d.join();
 
 	return EXIT_SUCCESS;
 }

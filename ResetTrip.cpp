@@ -9,6 +9,10 @@
 #include "ResetIdle.h"
 #include "ResetWatchdog.h"
 
+static void tripResetHeld(StateContext* context) {
+	((ResetWatchdog*)context)->tripValuesReset();
+}
+
 ResetTrip::ResetTrip(StateParent* parent, StateContext* context) :
 TimeoutState(parent, context, 2, 0) {}
 
@@ -20,5 +24,5 @@ void ResetTrip::accept(Event event) {
 
 void ResetTrip::timeout() {
 	// Timing out after the 2 seconds will reset the trip values.
-	((ResetWatchdog*)context)->tripValuesReset();
+	parent->doTransition(new ResetIdle(parent, context), tripResetHeld);
 }

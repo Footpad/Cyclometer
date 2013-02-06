@@ -11,6 +11,7 @@
 #include "Common.h"
 
 class State;
+class StateContext;
 
 class StateParent {
 public:
@@ -25,6 +26,11 @@ public:
 	 * @param action - the transition action of the transition.
 	 */
 	void doTransition(State* next, Action action);
+
+	/**
+	 * @return the StateContext for this parent.
+	 */
+	virtual StateContext* getStateContext() = 0;
 
 protected:
 	State* childState;

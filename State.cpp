@@ -14,15 +14,18 @@ context(_context) {
 	assert(context);
 }
 
-State::State(StateParent* _parent, StateContext* _context, State* _childState) :
-parent(_parent),
-context(_context) {
-	assert(parent);
-	assert(context);
-	assert(childState);
-	childState = _childState;
+void State::entryAction() {
+	// Do nothing by default, override by concrete states.
+}
+
+void State::exitAction() {
+	// Do nothing by default, override by concrete states.
 }
 
 StateParent* State::getParent() {
 	return parent;
+}
+
+StateContext* State::getStateContext() {
+	return context;
 }

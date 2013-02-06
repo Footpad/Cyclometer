@@ -15,8 +15,6 @@ public:
 	ResetIdle(StateParent* parent, StateContext* context);
 
 	void accept(Event event);
-	void entryAction();
-	void exitAction();
 };
 
 #endif /* RESETIDLE_H_ */

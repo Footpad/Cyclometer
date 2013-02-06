@@ -17,7 +17,6 @@ class StateContext; //forward declaration because we can't #include in both dire
 class State : public StateParent {
 public:
 	State(StateParent* parent, StateContext* context);
-	State(StateParent* parent, StateContext* context, State *childState);
 
 	/**
 	 * Accept an event and a context; transitions context to a new
@@ -30,17 +29,19 @@ public:
 	/**
 	 * Entry action of the state when a transition occurs.
 	 */
-	virtual void entryAction() = 0;
+	virtual void entryAction();
 
 	/**
 	 * Exit action of the state when a transition occurs.
 	 */
-	virtual void exitAction() = 0;
+	virtual void exitAction();
 
 	/**
 	 * @return the parent of this state.
 	 */
 	StateParent* getParent();
+
+	StateContext* getStateContext();
 
 protected:
 

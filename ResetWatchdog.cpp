@@ -12,6 +12,7 @@
 ResetWatchdog::ResetWatchdog(CyclometerController* _cyclometer) :
 cyclometer(_cyclometer) {
 	childState = new ResetIdle(this, this);
+	childState->entryAction();
 }
 
 void ResetWatchdog::fullReset() {

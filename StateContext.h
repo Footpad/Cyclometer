@@ -15,7 +15,6 @@
 class StateContext : public StateParent {
 public:
 	StateContext();
-	virtual ~StateContext();
 
 	/**
 	 * Accept an event which is passed to the states.
@@ -23,6 +22,8 @@ public:
 	 * @param event - the event that the context is accepting.
 	 */
 	void accept(Event event);
+
+	StateContext* getStateContext();
 
 private:
 	/**
