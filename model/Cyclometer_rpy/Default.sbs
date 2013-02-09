@@ -3,9 +3,194 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 	- _id = GUID 99c7c965-4e38-4e21-810c-d2da941232b1;
 	- _myState = 8192;
 	- _name = "Default";
-	- _lastID = 18;
-	- weakCGTime = 2.6.2013::2:20:54;
-	- strongCGTime = 1.30.2013::22:27:27;
+	- _lastID = 29;
+	- Declaratives = { IRPYRawContainer 
+		- size = 11;
+		- value = 
+		{ INode 
+			- _id = GUID e59965fd-9545-4450-b92f-a0b43488a18c;
+			- _name = "Purplebox";
+			- ComponentInstances = { IRPYRawContainer 
+				- size = 4;
+				- value = 
+				{ IComponentInstance 
+					- _id = GUID c86e9fe5-54f6-4d5a-b2b8-7eb462855d64;
+					- _name = "PushbuttonScanner";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+				{ IComponentInstance 
+					- _id = GUID 64d58dc3-5771-42cf-af0f-4e9093b45b25;
+					- _name = "PulseScanner";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+				{ IComponentInstance 
+					- _id = GUID 58d57d2e-393c-4477-9b4b-ae324d939347;
+					- _name = "CyclometerController";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+				{ IComponentInstance 
+					- _id = GUID 806bcbec-c13d-4c96-bc5a-e941ab7216f9;
+					- _name = "Display";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+			}
+		}
+		{ INode 
+			- _id = GUID 9475daea-7759-4ba0-a13a-fea9685df2ab;
+			- _name = "FPGA";
+			- ComponentInstances = { IRPYRawContainer 
+				- size = 3;
+				- value = 
+				{ IComponentInstance 
+					- _id = GUID 9daee708-2303-4377-a583-8f0de84c82e5;
+					- _name = "LEDs";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+				{ IComponentInstance 
+					- _id = GUID b0c31069-2bdc-41d6-88c7-738380f6e5e8;
+					- _name = "SevenSegDisp";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+				{ IComponentInstance 
+					- _id = GUID 31b106d9-c103-43b5-a47c-f79ab3c6acd8;
+					- _name = "Pushbuttons";
+					- _dependsOn = { INObjectHandle 
+						- _m2Class = "";
+					}
+				}
+			}
+		}
+		{ INode 
+			- _id = GUID a509b916-85b3-4135-a4b6-569c9aa83880;
+			- _name = "FunctionGenerator";
+		}
+		{ IInformationFlow 
+			- _id = GUID 181c6807-ee0f-43f8-9cbc-c8b4e6fb3721;
+			- _myState = 2048;
+			- _name = "PushbuttonScanner_CyclometerController";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID c86e9fe5-54f6-4d5a-b2b8-7eb462855d64;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 58d57d2e-393c-4477-9b4b-ae324d939347;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID ae0a0df6-aaad-4856-abed-41af56d06673;
+			- _myState = 2048;
+			- _name = "PulseScanner_CyclometerController";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 64d58dc3-5771-42cf-af0f-4e9093b45b25;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 58d57d2e-393c-4477-9b4b-ae324d939347;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID 731f8fdb-9afe-45a7-b50b-7a9bcf933455;
+			- _myState = 2048;
+			- _name = "FunctionGenerator_PulseScanner";
+			- end1_ = { IHandle 
+				- _m2Class = "INode";
+				- _id = GUID a509b916-85b3-4135-a4b6-569c9aa83880;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 64d58dc3-5771-42cf-af0f-4e9093b45b25;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID 0f81f81a-89f8-40c1-b784-a04f32285f8c;
+			- _myState = 2048;
+			- _name = "CyclometerController_Display";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 58d57d2e-393c-4477-9b4b-ae324d939347;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 806bcbec-c13d-4c96-bc5a-e941ab7216f9;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID 4e94835f-e123-40e0-834e-eb1161d39f84;
+			- _myState = 2048;
+			- _name = "Pushbuttons_PushbuttonScanner";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 31b106d9-c103-43b5-a47c-f79ab3c6acd8;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID c86e9fe5-54f6-4d5a-b2b8-7eb462855d64;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID 8ccd9eaf-fe2e-41d5-a59d-fdfc403ff018;
+			- _myState = 2048;
+			- _name = "Pushbuttons_PushbuttonScanner_0";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 31b106d9-c103-43b5-a47c-f79ab3c6acd8;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID c86e9fe5-54f6-4d5a-b2b8-7eb462855d64;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID 7877a1cb-0e59-49a5-b40f-e861bd182f54;
+			- _myState = 2048;
+			- _name = "Display_LEDs";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 806bcbec-c13d-4c96-bc5a-e941ab7216f9;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 9daee708-2303-4377-a583-8f0de84c82e5;
+			}
+			- direction_ = toEnd2;
+		}
+		{ IInformationFlow 
+			- _id = GUID cc4b3688-336f-4ce4-9a67-ccd9d91f9bcd;
+			- _myState = 2048;
+			- _name = "Display_SevenSegDisp";
+			- end1_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID 806bcbec-c13d-4c96-bc5a-e941ab7216f9;
+			}
+			- end2_ = { IHandle 
+				- _m2Class = "IComponentInstance";
+				- _id = GUID b0c31069-2bdc-41d6-88c7-738380f6e5e8;
+			}
+			- direction_ = toEnd2;
+		}
+	}
+	- weakCGTime = 2.6.2013::20:36:45;
+	- strongCGTime = 2.6.2013::20:34:12;
 	- AssociationElements = { IRPYRawContainer 
 		- size = 3;
 		- value = 
@@ -82,7 +267,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 			- _id = GUID 220229d2-0945-416b-bb89-d9130d978435;
 			- _myState = 40960;
 			- _name = "TopLevel";
-			- weakCGTime = 2.5.2013::22:32:42;
+			- weakCGTime = 2.6.2013::2:20:54;
 			- strongCGTime = 1.30.2013::22:27:27;
 			- _multiplicity = "";
 			- _itsStateChart = { IHandle 
@@ -2638,7 +2823,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.466192 0 0 0.230769 300.033 775 ;
+									- m_transform = 0.466192 0 0 0.230769 300 775 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";

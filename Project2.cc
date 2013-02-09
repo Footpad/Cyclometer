@@ -1,24 +1,25 @@
+//Global includes.
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
 #include <unistd.h>
-
 #include <stdint.h>       /* for uintptr_t */
 #include <hw/inout.h>     /* for in*() and out*() functions */
 #include <sys/neutrino.h> /* for ThreadCtl() */
 #include <sys/mman.h>     /* for mmap_device_io() */
 
-#include "DataProviderImpl.h"
 
-#include "PushbuttonScanTester.h"
+//-------- Local Includes ----------//
+
+//Old test class includes
+//#include "DataProviderImpl.h"
+//#include "PushbuttonScanTester.h"
+
+#include "PulseScanner.h"
 #include "PushbuttonScanner.h"
-
 #include "Display.h"
-
 #include "CyclometerController.h"
-
 #include "ResetWatchdog.h"
-
 #include "EventCenter.h"
 
 // DAQ Port addresses
@@ -38,6 +39,8 @@ uintptr_t daq_dir_handle;
 uintptr_t daq_porta_handle;
 uintptr_t daq_portb_handle;
 uintptr_t daq_portc_handle;
+uintptr_t ctrl_handle;
+uintptr_t cmd_handle;
 
 /**
  * Get root permissions to get access to hardware...
@@ -81,27 +84,39 @@ int main(int argc, char *argv[]) {
 	daq_portb_handle = getHandle(DATA_PORT_B);
 	/* Get a handle to Port C for controller inputs */
 	daq_portc_handle = getHandle(DATA_PORT_C);
+	/* Get a handle to the command port for interrupts */
+	cmd_handle = getHandle(DATA_BASE_ADDRESS);
+	/* Get a handle to the control register... */
+	ctrl_handle = getHandle(DATA_BASE_ADDRESS + 4);
 
-	//Start the display thread.
-	Display d(NULL, daq_porta_handle, daq_portb_handle);
-	//Start the display
-	d.start();
+	//enable Digital IO Interrupts (Ext Trig pin)...
+	out8(ctrl_handle, (0b00011111));
+
+	//Start the pulse scanner...
+	PulseScanner ps(cmd_handle);
 
 	//Start the pushbutton scanner...
 	PushbuttonScanner pbs(daq_portc_handle);
 	pbs.start();
 
 	//Start the CyclometerController
-	CyclometerController cc;
+	CyclometerController cc(&ps);
 
 	//Start the ResetWatchdog
 	ResetWatchdog rw(&cc);
+
+	//Start the display thread.
+	Display d(NULL, daq_porta_handle, daq_portb_handle);
+	//Start the display
+	d.start();
 
 	//Register all the state contexts
 	EventCenter::DefaultEventCenter()->registerContext(&rw);
 	EventCenter::DefaultEventCenter()->registerContext(&cc);
 
 	// TODO: Do we join on someone or just let the main thread loop infinitely?
+	//           @Dan -> Same thing really. join() looks nice like we might
+	//                   have the intent of cleaning up at some point.
 	d.join();
 
 	return EXIT_SUCCESS;

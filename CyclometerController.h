@@ -19,7 +19,7 @@ enum TripMode {
 
 class CyclometerController: public StateContext {
 public:
-	CyclometerController();
+	CyclometerController(PulseScanner* scanner);
 
 	/**
 	 * @return whether initialization has completed.
@@ -46,7 +46,7 @@ private:
 	bool isFullResetDone;
 
 	// This controller's pulse scanner.
-	PulseScanner pulseScanner;
+	PulseScanner* pulseScanner;
 
 	// Which trip mode is currently being displayed.
 	TripMode tripMode;

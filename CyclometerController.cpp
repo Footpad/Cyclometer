@@ -9,11 +9,15 @@
 #include "Initialize.h"
 #include "PulseScanner.h"
 
-CyclometerController::CyclometerController() :
+CyclometerController::CyclometerController(PulseScanner* scanner) :
 isFullResetDone(false),
-tripMode(TRIP_MANUAL) {
+pulseScanner(scanner),
+tripMode(TRIP_MANUAL)
+{
 	childState = new Initialize(this, this);
 	childState->entryAction();
+
+	pulseScanner->start();
 }
 
 bool CyclometerController::getIsFullResetDone() {
@@ -33,5 +37,5 @@ void CyclometerController::toggleTripMode() {
 }
 
 PulseScanner* CyclometerController::getPulseScanner() {
-	return &pulseScanner;
+	return pulseScanner;
 }

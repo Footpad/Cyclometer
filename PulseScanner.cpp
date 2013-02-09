@@ -7,18 +7,43 @@
 
 #include "PulseScanner.h"
 
-PulseScanner::PulseScanner() {
+const struct sigevent *
+interruptReceived(void *arg, int id) {
+	((PulseScanner*) arg)->incrementPulseCount();
+
+	//clear the interrupt.
+	out8(((PulseScanner*) arg)->getCmdHandle(), (0b00001111));
+	return NULL;
+}
+
+PulseScanner::PulseScanner(uintptr_t cmd) :
+	cmd_handle(cmd) {
 	killThreads = false;
 	circumference = 210;
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
 	units = KM;
+
+
 }
 
-PulseScanner::~PulseScanner() { }
+PulseScanner::~PulseScanner() {
+}
 
 void PulseScanner::start() {
+	//try to associate our interrupt with the board...
+	interruptID = InterruptAttach(DAQ_IRQ, interruptReceived, this,
+			sizeof(this), 0);
+	if (interruptID == -1) {
+		fprintf(stderr, "can't attach to IRQ %d\n", DAQ_IRQ);
+		perror(NULL);
+		exit(-1);
+	}
+
+	// clear any lingering interrupts.
+	out8(cmd_handle, (0b00001111));
+
 	this->create(PulseScanner::running, this);
 }
 
@@ -27,10 +52,16 @@ void PulseScanner::stop() {
 }
 
 void* PulseScanner::running(void* args) {
-	PulseScanner* self = (PulseScanner*)args;
+	PulseScanner* self = (PulseScanner*) args;
 
-	while(!self->killThreads) {
-
+	//while running...
+	while (!self->killThreads) {
+		//we should obtain the pulse count and clear it out at regular intervals
+		//we should also accrue timeElapsed when appropriate
+		//and update other statistics when possible (calculations enabled and the interval expired)
+		printf( "%d\n", self->pulseCount );
+		out8(self->cmd_handle, (0b00001111));
+		usleep(1000000);
 	}
 
 	return NULL;
@@ -43,7 +74,7 @@ float PulseScanner::averageSpeed() {
 	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
 
 	//return the Units/Hour
-	return (tripDistKM / (clockCount/SECONDS_PER_HOUR)) * scaleFactor;
+	return (tripDistKM / (clockCount / SECONDS_PER_HOUR)) * scaleFactor;
 }
 
 //TODO: implement this?
@@ -63,4 +94,12 @@ void PulseScanner::resetTripValues() {
 
 void PulseScanner::toggleUnits() {
 	units = (units == KM ? MILES : KM);
+}
+
+uintptr_t PulseScanner::getCmdHandle() {
+	return cmd_handle;
+}
+
+void PulseScanner::incrementPulseCount() {
+	pulseCount++;
 }
