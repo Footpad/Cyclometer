@@ -18,7 +18,6 @@ interruptReceived(void *arg, int id) {
 
 PulseScanner::PulseScanner(uintptr_t cmd) :
 	cmd_handle(cmd) {
-	killThreads = false;
 	circumference = 210;
 	tripDistKM = 0;
 	clockCount = 0;
@@ -31,7 +30,7 @@ PulseScanner::PulseScanner(uintptr_t cmd) :
 PulseScanner::~PulseScanner() {
 }
 
-void PulseScanner::start() {
+void* PulseScanner::run() {
 	//try to associate our interrupt with the board...
 	interruptID = InterruptAttach(DAQ_IRQ, interruptReceived, this,
 			sizeof(this), 0);
@@ -44,23 +43,13 @@ void PulseScanner::start() {
 	// clear any lingering interrupts.
 	out8(cmd_handle, (0b00001111));
 
-	this->create(PulseScanner::running, this);
-}
-
-void PulseScanner::stop() {
-	killThreads = true;
-}
-
-void* PulseScanner::running(void* args) {
-	PulseScanner* self = (PulseScanner*) args;
-
 	//while running...
-	while (!self->killThreads) {
+	while (!killThread) {
 		//we should obtain the pulse count and clear it out at regular intervals
 		//we should also accrue timeElapsed when appropriate
 		//and update other statistics when possible (calculations enabled and the interval expired)
-		printf( "%d\n", self->pulseCount );
-		out8(self->cmd_handle, (0b00001111));
+		printf( "%d\n", pulseCount );
+		out8(cmd_handle, (0b00001111));
 		usleep(1000000);
 	}
 
@@ -86,6 +75,10 @@ void PulseScanner::incrementCircumference() {
 	circumference = (circumference == 210 ? 190 : circumference + 1);
 }
 
+int PulseScanner::getCircumference() {
+	return circumference;
+}
+
 void PulseScanner::resetTripValues() {
 	tripDistKM = 0;
 	clockCount = 0;
@@ -94,6 +87,10 @@ void PulseScanner::resetTripValues() {
 
 void PulseScanner::toggleUnits() {
 	units = (units == KM ? MILES : KM);
+}
+
+DistanceUnit PulseScanner::getUnits() {
+	return units;
 }
 
 uintptr_t PulseScanner::getCmdHandle() {

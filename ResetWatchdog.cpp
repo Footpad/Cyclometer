@@ -10,6 +10,7 @@
 #include "ResetIdle.h"
 
 ResetWatchdog::ResetWatchdog(CyclometerController* _cyclometer) :
+StateContext(),
 cyclometer(_cyclometer) {
 	childState = new ResetIdle(this, this);
 	childState->entryAction();

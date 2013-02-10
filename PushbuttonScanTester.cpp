@@ -7,69 +7,69 @@
 
 #include "PushbuttonScanTester.h"
 
-PushbuttonScanTester::PushbuttonScanTester() {}
+PushbuttonScanTester::PushbuttonScanTester() :
+StateContext() {}
 
 PushbuttonScanTester::~PushbuttonScanTester() {}
 
-void PushbuttonScanTester::start() {
-	EventCenter::DefaultEventCenter()->registerContext(this);
-	this->create(PushbuttonScanTester::running, this);
-}
-
-void* PushbuttonScanTester::running(void* args) {
-	PushbuttonScanTester* self = (PushbuttonScanTester*)args;
-
+void* PushbuttonScanTester::run() {
 	printf("PBST Running\n");
-	while(true) {
-		while(self->eventQueue.size() == 0) {
-			usleep(5000);
-		}
-		while(self->eventQueue.size() > 0) {
-			switch (self->eventQueue.front()) {
-			// Used in anonymous transitions.
-			case evNoEvent:
-				printf("SCANTESTER: evNoEvent\n");
-				break;
-			case evFullReset:
-				printf("SCANTESTER: evFullReset\n");
-				break;
-			case evSetDepressed:
-				printf("SCANTESTER: evSetDepressed\n");
-				break;
-			case evSetReleased:
-				printf("SCANTESTER: evSetReleased\n");
-				break;
-			case evModeDepressed:
-				printf("SCANTESTER: evModeDepressed\n");
-				break;
-			case evModeReleased:
-				printf("SCANTESTER: evModeReleased\n");
-				break;
-			case evStartStopDepressed:
-				printf("SCANTESTER: evStartStopDepressed\n");
-				break;
-			case evStartStopReleased:
-				printf("SCANTESTER: evStartStopReleased\n");
-				break;
-			case evModeStartStopDepressed:
-				printf("SCANTESTER: evModeStartStopDepressed\n");
-				break;
-			case evModeStartStopReleased:
-				printf("SCANTESTER: evModeStartStopReleased\n");
-				break;
-			case evAllDepressed:
-				printf("SCANTESTER: evAllDepressed\n");
-				break;
-			case evAllReleased:
-				printf("SCANTESTER: evAllReleased\n");
-				break;
-			default:
-				printf("SCANTESTER: default???\n");
-				break;
-			}
 
-			self->eventQueue.pop();
+	// Continuously pop events off our queue and accept them.
+	while (!killThread) {
+		pthread_sleepon_lock();
+
+		// This thread should sleep until there is an event.
+		while (eventQueue.empty()) {
+			pthread_sleepon_wait(&eventQueue);
 		}
+
+		switch (eventQueue.front()) {
+		// Used in anonymous transitions.
+		case evNoEvent:
+			printf("SCANTESTER: evNoEvent\n");
+			break;
+		case evFullReset:
+			printf("SCANTESTER: evFullReset\n");
+			break;
+		case evSetDepressed:
+			printf("SCANTESTER: evSetDepressed\n");
+			break;
+		case evSetReleased:
+			printf("SCANTESTER: evSetReleased\n");
+			break;
+		case evModeDepressed:
+			printf("SCANTESTER: evModeDepressed\n");
+			break;
+		case evModeReleased:
+			printf("SCANTESTER: evModeReleased\n");
+			break;
+		case evStartStopDepressed:
+			printf("SCANTESTER: evStartStopDepressed\n");
+			break;
+		case evStartStopReleased:
+			printf("SCANTESTER: evStartStopReleased\n");
+			break;
+		case evModeStartStopDepressed:
+			printf("SCANTESTER: evModeStartStopDepressed\n");
+			break;
+		case evModeStartStopReleased:
+			printf("SCANTESTER: evModeStartStopReleased\n");
+			break;
+		case evAllDepressed:
+			printf("SCANTESTER: evAllDepressed\n");
+			break;
+		case evAllReleased:
+			printf("SCANTESTER: evAllReleased\n");
+			break;
+		default:
+			printf("SCANTESTER: default???\n");
+			break;
+		}
+
+		eventQueue.pop();
+
+		pthread_sleepon_unlock();
 	}
 
 	return NULL;

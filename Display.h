@@ -56,10 +56,10 @@ public:
 	virtual ~Display();
 
 	/**
-	 * Implement with a call to the create protected function with the
-	 * proper statically defined function.
+	 * Continuously update the 7 segment display from a
+	 * data provider.
 	 */
-	virtual void start();
+	void* run();
 
 	/**
 	 * Set the data provider; setting this on the fly updates the display
@@ -68,13 +68,6 @@ public:
 	 * @param next - the new DataProvider which the display will reflect
 	 */
 	void setDataProvider(DataProvider* next);
-
-	/**
-	 * Stop the display thread from running.
-	 */
-	void stop();
-
-	static void* running(void* args);
 
 private:
 	DataProvider* data;

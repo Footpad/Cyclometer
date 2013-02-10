@@ -30,3 +30,20 @@ void SetCircumference::accept(Event event) {
 		childState->accept(event);
 	}
 }
+
+DisplayInfo SetCircumference::getData() {
+	DisplayInfo info;
+
+	// Clear the display info.
+	for (int i = 0; i < NUM_DIGITS; i++) {
+		info.dp[i] = false;
+	}
+
+	// Display 1 for kilometers, 2 for miles.
+	int circumference = ((CyclometerController*)context)->getPulseScanner()->getCircumference();
+	info.val[0] = circumference % 10;
+	info.val[1] = (circumference % 100) / 10;
+	info.val[2] = circumference / 100;
+
+	return info;
+}

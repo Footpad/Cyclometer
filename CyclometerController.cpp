@@ -10,6 +10,7 @@
 #include "PulseScanner.h"
 
 CyclometerController::CyclometerController(PulseScanner* scanner) :
+StateContext(),
 isFullResetDone(false),
 pulseScanner(scanner),
 tripMode(TRIP_MANUAL)
@@ -39,3 +40,8 @@ void CyclometerController::toggleTripMode() {
 PulseScanner* CyclometerController::getPulseScanner() {
 	return pulseScanner;
 }
+
+DisplayInfo CyclometerController::getData() {
+	return ((DataProvider*)childState)->getData();
+}
+

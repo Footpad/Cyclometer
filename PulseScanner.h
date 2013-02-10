@@ -32,11 +32,10 @@ public:
 	PulseScanner(uintptr_t cmd);
 	virtual ~PulseScanner();
 
-	void start();
-
-	void stop();
-
-	static void* running(void* args);
+	/**
+	 * Continuously scans the magnetic sensor.
+	 */
+	void* run();
 
 	float averageSpeed();
 
@@ -44,17 +43,19 @@ public:
 
 	void incrementCircumference();
 
+	int getCircumference();
+
 	void resetTripValues();
 
 	void toggleUnits();
+
+	DistanceUnit getUnits();
 
 	uintptr_t getCmdHandle();
 
 	void incrementPulseCount();
 
 private:
-	bool killThreads;
-
 	//circumference in CM
 	int circumference;
 

@@ -16,37 +16,27 @@ Display::Display(DataProvider* d, uintptr_t cat, uintptr_t an)
 
 Display::~Display() {}
 
-void Display::start() {
-	this->create(Display::running, this);
-}
-
 void Display::setDataProvider(DataProvider* next) {
 	data = next;
 }
 
-void Display::stop() {
-	killThread = true;
-}
-
-void* Display::running(void* args) {
-	Display* self = (Display*)args;
-
+void* Display::run() {
 	char cathWriteVal;
 	char decimal;
 
 	//clear all the anodes.
-	out8(self->anode, in8(self->anode) | (0b00001111));
+	out8(anode, in8(anode) | (0b00001111));
 
-	while(!self->killThread) {
+	while(!killThread) {
 		// if the data provider isn't null, update the display
-		if(self->data != NULL) {
+		if(data != NULL) {
 			//First get the DisplayInfo
-			DisplayInfo inf = self->data->getData();
+			DisplayInfo inf = data->getData();
 
 			//Iterate over the anodes of the display.
 			for(int i = 0; i < NUM_ANODES; i++) {
 				//set the anode for the digit being worked on
-				out8(self->anode, (in8(self->anode) & ~(1 << i)));
+				out8(anode, (in8(anode) & ~(1 << i)));
 
 				//set the decimal point if specified
 				decimal = 0;
@@ -57,13 +47,13 @@ void* Display::running(void* args) {
 				cathWriteVal = CATHODE_TABLE[inf.val[i]] | decimal;
 
 				//write the value to the cathodes; inverted because it is Active LOW
-				out8(self->cathode, ~cathWriteVal);
+				out8(cathode, ~cathWriteVal);
 
 				//sleep for 25% of the total time spent on updating the display.
 				usleep(SLEEP_PERIOD);
 
 				//clear the anode.
-				out8(self->anode, (in8(self->anode) | (1 << i)));
+				out8(anode, (in8(anode) | (1 << i)));
 			}
 		}
 	}

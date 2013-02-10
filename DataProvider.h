@@ -10,6 +10,9 @@
 
 #define NUM_DIGITS (4)
 
+// Corresponds to the CATHODE_TABLE entry for a blank digit.
+#define BLANK_DIGIT (10)
+
 /*
  * typedef for a struct. DisplayInfo contains an array of values and bools.
  * The index of each (val and dp) corresponds to a single digit on the seven

@@ -22,3 +22,14 @@ void Initialize::entryAction() {
 	((CyclometerController*)context)->setFullResetDone(false);
 	parent->doTransition(new SetUnits(parent, context), NULL);
 }
+
+DisplayInfo Initialize::getData() {
+	DisplayInfo info;
+
+	// Numbers should all be blank, decimal points should be lit.
+	for (int i = 0; i < NUM_DIGITS; i++) {
+		info.val[i] = BLANK_DIGIT;
+		info.dp[i] = true;
+	}
+	return info;
+}

@@ -8,6 +8,7 @@
 #include "SetUnits.h"
 #include "SetCircumference.h"
 #include "CyclometerController.h"
+#include "PulseScanner.h"
 
 static void toggleUnits(StateContext* context) {
 	((CyclometerController*)context)->getPulseScanner()->toggleUnits();
@@ -22,4 +23,20 @@ void SetUnits::accept(Event event) {
 	} else if (event == evSetDepressed) {
 		parent->doTransition(new SetCircumference(parent, context), NULL);
 	}
+}
+
+DisplayInfo SetUnits::getData() {
+	DisplayInfo info;
+
+	// Clear the display info.
+	for (int i = 0; i < NUM_DIGITS; i++) {
+		info.val[i] = BLANK_DIGIT;
+		info.dp[i] = false;
+	}
+
+	// Display 1 for kilometers, 2 for miles.
+	DistanceUnit units = ((CyclometerController*)context)->getPulseScanner()->getUnits();
+	info.val[0] = (units == KM) ? 1 : 2;
+
+	return info;
 }

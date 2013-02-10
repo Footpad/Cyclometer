@@ -9,12 +9,15 @@
 #define SETCIRCUMFERENCE_H_
 
 #include "State.h"
+#include "DataProvider.h"
 
-class SetCircumference: public State {
+class SetCircumference: public State, DataProvider {
 public:
 	SetCircumference(StateParent* parent, StateContext* context);
 
 	void accept(Event event);
+
+	DisplayInfo getData();
 };
 
 #endif /* SETCIRCUMFERENCE_H_ */

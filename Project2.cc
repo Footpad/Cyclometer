@@ -20,7 +20,6 @@
 #include "Display.h"
 #include "CyclometerController.h"
 #include "ResetWatchdog.h"
-#include "EventCenter.h"
 
 // DAQ Port addresses
 #define DATA_BASE_ADDRESS (0x280)
@@ -93,31 +92,41 @@ int main(int argc, char *argv[]) {
 	out8(ctrl_handle, (0b00011111));
 
 	//Start the pulse scanner...
-	PulseScanner ps(cmd_handle);
+	PulseScanner pulseScanner(cmd_handle);
 
 	//Start the pushbutton scanner...
-	PushbuttonScanner pbs(daq_portc_handle);
-	pbs.start();
+	PushbuttonScanner pushbuttonScanner(daq_portc_handle);
+	pushbuttonScanner.start();
 
 	//Start the CyclometerController
-	CyclometerController cc(&ps);
+	CyclometerController cyclometerController(&pulseScanner);
 
 	//Start the ResetWatchdog
-	ResetWatchdog rw(&cc);
+	ResetWatchdog resetWatchdog(&cyclometerController);
 
 	//Start the display thread.
-	Display d(NULL, daq_porta_handle, daq_portb_handle);
+	// TODO: Figure out why the current implementation of DataProvider is crashing.
+	//Display display((DataProvider*)&cyclometerController, daq_porta_handle, daq_portb_handle);
+	Display display(NULL, daq_porta_handle, daq_portb_handle);
 	//Start the display
-	d.start();
+	display.start();
 
-	//Register all the state contexts
-	EventCenter::DefaultEventCenter()->registerContext(&rw);
-	EventCenter::DefaultEventCenter()->registerContext(&cc);
+	for (;;) {
+		// Loop infinitely because this is an embedded system.
+	}
 
-	// TODO: Do we join on someone or just let the main thread loop infinitely?
-	//           @Dan -> Same thing really. join() looks nice like we might
-	//                   have the intent of cleaning up at some point.
-	d.join();
+	// Clean up threads.
+	// NB: Program will never get here, just for show.
+	pulseScanner.stop();
+	pushbuttonScanner.stop();
+	cyclometerController.stop();
+	resetWatchdog.stop();
+	display.stop();
+	pulseScanner.join();
+	pushbuttonScanner.join();
+	cyclometerController.join();
+	resetWatchdog.join();
+	display.join();
 
 	return EXIT_SUCCESS;
 }

@@ -9,13 +9,16 @@
 #define INITIALIZE_H_
 
 #include "State.h"
+#include "DataProvider.h"
 
-class Initialize : public State {
+class Initialize : public State, DataProvider {
 public:
 	Initialize(StateParent* parent, StateContext* context);
 
 	void accept(Event event);
 	void entryAction();
+
+	DisplayInfo getData();
 };
 
 #endif /* INITIALIZE_H_ */

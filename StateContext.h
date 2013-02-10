@@ -11,8 +11,9 @@
 #include <queue>
 #include "State.h"
 #include "StateParent.h"
+#include "Thread.h"
 
-class StateContext : public StateParent {
+class StateContext : public StateParent, public Thread {
 public:
 	StateContext();
 
@@ -23,13 +24,12 @@ public:
 	 */
 	void accept(Event event);
 
-	StateContext* getStateContext();
-
-private:
 	/**
-	 * Accept an even which has been enqueued to the context.
+	 * Dequeues events from the event queue when there are events available.
 	 */
-	void accept();
+	virtual void* run();
+
+	StateContext* getStateContext();
 
 protected:
 	std::queue<Event> eventQueue;

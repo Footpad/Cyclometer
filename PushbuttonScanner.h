@@ -39,14 +39,12 @@ public:
 	PushbuttonScanner(uintptr_t input_port);
 	virtual ~PushbuttonScanner();
 
-	static void* running(void* args);
-
-	void start();
-
-	void stop();
+	/**
+	 * Continuously scans the push buttons for depresses and releases.
+	 */
+	void* run();
 
 private:
-	bool killThread;
 	uintptr_t input_port_handle;
 };
 

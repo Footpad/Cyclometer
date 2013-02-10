@@ -10,6 +10,7 @@
 
 #include "StateContext.h"
 #include "PulseScanner.h"
+#include "DataProvider.h"
 
 // Enumeration of the two trip modes for the cyclometer.
 enum TripMode {
@@ -17,7 +18,7 @@ enum TripMode {
 	TRIP_AUTO
 };
 
-class CyclometerController: public StateContext {
+class CyclometerController: public StateContext, DataProvider {
 public:
 	CyclometerController(PulseScanner* scanner);
 
@@ -37,9 +38,14 @@ public:
 	void toggleTripMode();
 
 	/**
-	 * Get a reference to the pulse scanner.
+	 * @return a reference to the pulse scanner.
 	 */
 	PulseScanner* getPulseScanner();
+
+	/**
+	 * @return the active state's getData.
+	 */
+	DisplayInfo getData();
 
 private:
 	// Used to determine which state is next after SetCircumference.
