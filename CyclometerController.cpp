@@ -10,11 +10,8 @@
 #include "PulseScanner.h"
 
 CyclometerController::CyclometerController(PulseScanner* scanner) :
-StateContext(),
-isFullResetDone(false),
-pulseScanner(scanner),
-tripMode(TRIP_MANUAL)
-{
+	StateContext(), isFullResetDone(false), pulseScanner(scanner), tripMode(
+			TRIP_MANUAL) {
 	childState = new Initialize(this, this);
 	childState->entryAction();
 
@@ -42,6 +39,13 @@ PulseScanner* CyclometerController::getPulseScanner() {
 }
 
 DisplayInfo CyclometerController::getData() {
-	return ((DataProvider*)childState)->getData();
+	DataProvider* dp = (DataProvider*)childState;
+	DisplayInfo inf = dp->getData();
+//	DisplayInfo inf;
+//	for(int i = 0; i < NUM_DIGITS; i++) {
+//		inf.val[i] = i;
+//		inf.dp[i] = false;
+//	}
+	return inf;
 }
 

@@ -106,8 +106,8 @@ int main(int argc, char *argv[]) {
 
 	//Start the display thread.
 	// TODO: Figure out why the current implementation of DataProvider is crashing.
-	//Display display((DataProvider*)&cyclometerController, daq_porta_handle, daq_portb_handle);
-	Display display(NULL, daq_porta_handle, daq_portb_handle);
+	Display display((DataProvider*)&cyclometerController, daq_porta_handle, daq_portb_handle);
+	//Display display(NULL, daq_porta_handle, daq_portb_handle);
 	//Start the display
 	display.start();
 

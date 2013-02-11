@@ -16,10 +16,9 @@
 #include <hw/inout.h>     /* for in*() and out*() functions */
 
 // The refresh rate of the screen in Hz
-#define REFRESH_RATE (120)
 #define NUM_ANODES (4)
 
-#define SLEEP_PERIOD (4000)
+#define SLEEP_PERIOD (2000)
 
 #define DP_CATHODE (0b00000001)
 

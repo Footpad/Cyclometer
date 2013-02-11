@@ -38,5 +38,5 @@ DisplayInfo State::getData() {
 		info.dp[i] = false;
 	}
 
-	return info
+	return info;
 }
