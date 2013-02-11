@@ -27,6 +27,12 @@ enum DistanceUnit {
 	MILES = 2
 };
 
+// Enumeration of the two trip modes for the cyclometer.
+enum TripMode {
+	TRIP_MANUAL = 0,
+	TRIP_AUTO
+};
+
 class PulseScanner : public Thread {
 public:
 	PulseScanner(uintptr_t cmd);
@@ -36,6 +42,8 @@ public:
 	 * Continuously scans the magnetic sensor.
 	 */
 	void* run();
+
+	static const struct sigevent * interruptReceived(void *arg, int id);
 
 	float averageSpeed();
 
@@ -47,6 +55,8 @@ public:
 
 	void resetTripValues();
 
+	void toggleTripMode();
+
 	void toggleUnits();
 
 	DistanceUnit getUnits();
@@ -54,6 +64,10 @@ public:
 	uintptr_t getCmdHandle();
 
 	void incrementPulseCount();
+
+	void scannerReset();
+
+	void toggleCalculate();
 
 private:
 	//circumference in CM
@@ -76,6 +90,12 @@ private:
 
 	//handle to the command port to clear the interrupt
 	uintptr_t cmd_handle;
+
+	//the mode; uses AUTO or MANUAL
+	int tripMode;
+
+	//the calculate flag
+	bool calcFlag;
 };
 
 #endif /* PULSESCANNER_H_ */

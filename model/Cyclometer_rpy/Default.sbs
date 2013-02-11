@@ -189,7 +189,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 			- direction_ = toEnd2;
 		}
 	}
-	- weakCGTime = 2.11.2013::13:13:54;
+	- weakCGTime = 2.11.2013::20:22:31;
 	- strongCGTime = 2.6.2013::20:34:12;
 	- AssociationElements = { IRPYRawContainer 
 		- size = 3;
@@ -267,7 +267,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 			- _id = GUID 220229d2-0945-416b-bb89-d9130d978435;
 			- _myState = 40960;
 			- _name = "TopLevel";
-			- weakCGTime = 2.9.2013::16:17:7;
+			- weakCGTime = 2.11.2013::13:13:54;
 			- strongCGTime = 2.6.2013::20:34:12;
 			- _multiplicity = "";
 			- _itsStateChart = { IHandle 
@@ -6136,7 +6136,7 @@ isFullResetDone = TRUE";
 				- _id = GUID b951dd55-3a10-4164-bc7a-af7803ced301;
 			}
 			- _lastID = 13;
-			- weakCGTime = 2.11.2013::13:17:6;
+			- weakCGTime = 2.11.2013::20:22:35;
 			- strongCGTime = 2.11.2013::13:6:30;
 			- Operations = { IRPYRawContainer 
 				- size = 9;
@@ -6437,7 +6437,7 @@ isFullResetDone = TRUE";
 					- _myState = 10240;
 					- _name = "statechart_12";
 					- _lastID = 13;
-					- weakCGTime = 2.11.2013::13:17:6;
+					- weakCGTime = 2.11.2013::20:22:35;
 					- strongCGTime = 2.11.2013::13:6:30;
 					- _multiplicity = "";
 					- _itsStateChart = { IHandle 
@@ -6586,11 +6586,7 @@ isFullResetDone = TRUE";
 										- _id = GUID 5241e268-bd5a-46dd-af39-598eacb68cbf;
 									}
 								}
-								- _itsGuard = { IGuard 
-									- _id = GUID 9cfd4787-8b5d-413d-ad95-fc66c711afac;
-									- _body = "cyclometer.state instanceof
-      DisplayTime || DisplaySpeed";
-								}
+								- _itsGuard = NULL;
 								- _itsAction = NULL;
 							}
 							- _itsTarget = GUID e373617d-c1ce-4638-9301-c90fa1bd6467;
@@ -6612,11 +6608,7 @@ isFullResetDone = TRUE";
 										- _id = GUID 5241e268-bd5a-46dd-af39-598eacb68cbf;
 									}
 								}
-								- _itsGuard = { IGuard 
-									- _id = GUID a4100f98-6a3e-47d0-ab8d-d1d3cfab4e14;
-									- _body = "cyclometer.state instanceof
-      DisplayTime || DisplaySpeed";
-								}
+								- _itsGuard = NULL;
 								- _itsAction = NULL;
 							}
 							- _itsTarget = GUID 7b5048ee-7e84-4301-99dc-029169a5ae8c;
@@ -6669,8 +6661,8 @@ isFullResetDone = TRUE";
 							- _defaultTrans = GUID 5ec5a99a-f400-4ec8-8d88-bc45f7311b6c;
 						}
 					}
-					- _version = 2.11.2013::8:17:34;
-					- _baseVersion = 12.31.1969::19:0:0;
+					- _version = 2.11.2013::15:22:37;
+					- _baseVersion = 1.2.1990::0:0:0;
 					- _diagram = GUID dc0cea4d-f35a-4f0f-97d8-8f70760cbd84;
 					- Views = { IRPYRawContainer 
 						- size = 1;
@@ -6746,7 +6738,7 @@ isFullResetDone = TRUE";
 								}
 							}
 							- _name = "statechartdiagram_0";
-							- _lastModifiedTime = "2.11.2013::13:17:34";
+							- _lastModifiedTime = "2.11.2013::20:22:37";
 							- _graphicChart = { CGIStateChart 
 								- _id = GUID 440fb0ec-37d7-471c-a532-e4f42e91e40b;
 								- m_type = 0;
@@ -6842,7 +6834,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.271955 0 0 0.167346 512.295 136.11 ;
+									- m_transform = 0.271955 0 0 0.167346 512 136 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";
@@ -6892,7 +6884,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.271955 0 0 0.167346 509.19 558.238 ;
+									- m_transform = 0.271955 0 0 0.167346 509 558 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";
@@ -6942,7 +6934,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.331034 0 0 0.174419 139.834 258.837 ;
+									- m_transform = 0.331034 0 0 0.174419 140 259 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";
@@ -6992,7 +6984,7 @@ isFullResetDone = TRUE";
 										- m_nOrientationCtrlPt = 5;
 									}
 									- m_drawBehavior = 4104;
-									- m_transform = 0.331034 0 0 0.174419 105.821 745.698 ;
+									- m_transform = 0.331034 0 0 0.174419 106 746 ;
 									- m_bIsPreferencesInitialized = 1;
 									- m_AdditionalLabel = { CGIText 
 										- m_str = "";
@@ -7695,20 +7687,19 @@ isFullResetDone = TRUE";
 									- m_targetType = 'T';
 									- m_direction = ' ';
 									- m_rpn = { CGIText 
-										- m_str = "evSetDepressed[cyclometer.state instanceof
-      DisplayTime || DisplaySpeed]";
+										- m_str = "evSetDepressed";
 										- m_style = "Arial" 10 0 0 0 1 ;
 										- m_color = { IColor 
 											- m_fgColor = 0;
 											- m_bgColor = 0;
 											- m_bgFlag = 0;
 										}
-										- m_position = 4 113 -20  349 -20  349 8  113 8  ;
+										- m_position = 4 68 -1  162 -1  162 13  68 13  ;
 										- m_nIdent = 0;
 										- m_bImplicitSetRectPoints = 0;
-										- m_transform = 1 0 0 1 274 109 ;
-										- m_nHorizontalSpacing = -106;
-										- m_nVerticalSpacing = -25;
+										- m_transform = 1 0 0 1 362 103 ;
+										- m_nHorizontalSpacing = -63;
+										- m_nVerticalSpacing = -12;
 										- m_nOrientationCtrlPt = 0;
 									}
 									- m_anglePoint1 = 0 0 ;
@@ -7776,20 +7767,19 @@ isFullResetDone = TRUE";
 									- m_targetType = 'T';
 									- m_direction = ' ';
 									- m_rpn = { CGIText 
-										- m_str = "evSetDepressed[cyclometer.state instanceof
-      DisplayTime || DisplaySpeed]";
+										- m_str = "evSetDepressed";
 										- m_style = "Arial" 10 0 0 0 1 ;
 										- m_color = { IColor 
 											- m_fgColor = 0;
 											- m_bgColor = 0;
 											- m_bgFlag = 0;
 										}
-										- m_position = 4 57 -15  293 -15  293 13  57 13  ;
+										- m_position = 4 68 -1  162 -1  162 13  68 13  ;
 										- m_nIdent = 0;
 										- m_bImplicitSetRectPoints = 0;
-										- m_transform = 1 0 0 1 318 316 ;
-										- m_nHorizontalSpacing = -116;
-										- m_nVerticalSpacing = -13;
+										- m_transform = 1 0 0 1 353 305 ;
+										- m_nHorizontalSpacing = -70;
+										- m_nVerticalSpacing = -10;
 										- m_nOrientationCtrlPt = 0;
 									}
 									- m_anglePoint1 = 0 0 ;

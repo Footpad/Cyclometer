@@ -7,27 +7,32 @@
 
 #include "PulseScanner.h"
 
-const struct sigevent *
-interruptReceived(void *arg, int id) {
-	((PulseScanner*) arg)->incrementPulseCount();
+const struct sigevent * PulseScanner::interruptReceived(void *arg, int id) {
+	PulseScanner* self = (PulseScanner*) arg;
+	self->pulseCount++;
 
 	//clear the interrupt.
-	out8(((PulseScanner*) arg)->getCmdHandle(), (0b00001111));
+	out8(self->cmd_handle, (0b00001111));
 	return NULL;
 }
 
 PulseScanner::PulseScanner(uintptr_t cmd) :
 	cmd_handle(cmd) {
+
+	this->scannerReset();
+}
+
+PulseScanner::~PulseScanner() {
+}
+
+void PulseScanner::scannerReset() {
 	circumference = 210;
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
 	units = KM;
-
-
-}
-
-PulseScanner::~PulseScanner() {
+	tripMode = TRIP_MANUAL;
+	calcFlag = false;
 }
 
 void* PulseScanner::run() {
@@ -99,4 +104,15 @@ uintptr_t PulseScanner::getCmdHandle() {
 
 void PulseScanner::incrementPulseCount() {
 	pulseCount++;
+}
+
+void PulseScanner::toggleTripMode() {
+	tripMode = (tripMode == TRIP_AUTO ? TRIP_MANUAL : TRIP_AUTO);
+	calcFlag = false;
+}
+
+void PulseScanner::toggleCalculate() {
+	if(tripMode == TRIP_MANUAL) {
+		calcFlag = !calcFlag;
+	}
 }

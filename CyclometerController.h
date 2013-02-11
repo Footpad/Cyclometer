@@ -12,12 +12,6 @@
 #include "PulseScanner.h"
 #include "DataProvider.h"
 
-// Enumeration of the two trip modes for the cyclometer.
-enum TripMode {
-	TRIP_MANUAL = 0,
-	TRIP_AUTO
-};
-
 class CyclometerController: public StateContext, DataProvider {
 public:
 	CyclometerController(PulseScanner* scanner);

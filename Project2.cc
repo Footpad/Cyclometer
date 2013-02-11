@@ -74,8 +74,6 @@ int main(int argc, char *argv[]) {
 
 	/* Get a handle for the direction register to set Port A and B */
 	daq_dir_handle = getHandle(DATA_DIRECTION);
-	// set the data directions...
-	out8(daq_dir_handle, SET_DIRECTION);
 
 	/* Get a handle to Port A for controller outputs 1 */
 	daq_porta_handle = getHandle(DATA_PORT_A);
@@ -88,8 +86,14 @@ int main(int argc, char *argv[]) {
 	/* Get a handle to the control register... */
 	ctrl_handle = getHandle(DATA_BASE_ADDRESS + 4);
 
+	//throw the reset bit to reset the board.
+	out8(ctrl_handle, (1 << 7));
+
 	//enable Digital IO Interrupts (Ext Trig pin)...
 	out8(ctrl_handle, (0b00011111));
+
+	// set the data directions...
+	out8(daq_dir_handle, SET_DIRECTION);
 
 	//Start the pulse scanner...
 	PulseScanner pulseScanner(cmd_handle);

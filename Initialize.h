@@ -11,7 +11,7 @@
 #include "State.h"
 #include "DataProvider.h"
 
-class Initialize : public State, DataProvider {
+class Initialize : public State {
 public:
 	Initialize(StateParent* parent, StateContext* context);
 
