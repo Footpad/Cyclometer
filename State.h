@@ -11,10 +11,11 @@
 #include <cstdio>
 #include "Common.h"
 #include "StateParent.h"
+#include "DataProvider.h"
 
 class StateContext; //forward declaration because we can't #include in both directions
 
-class State : public StateParent {
+class State : public StateParent, public DataProvider {
 public:
 	State(StateParent* parent, StateContext* context);
 
@@ -42,6 +43,8 @@ public:
 	StateParent* getParent();
 
 	StateContext* getStateContext();
+
+	virtual DisplayInfo getData();
 
 protected:
 

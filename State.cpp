@@ -29,3 +29,14 @@ StateParent* State::getParent() {
 StateContext* State::getStateContext() {
 	return context;
 }
+
+DisplayInfo State::getData() {
+	DisplayInfo info;
+
+	for (int i = 0; i < NUM_DIGITS; i++) {
+		info.val[i] = BLANK_DIGIT;
+		info.dp[i] = false;
+	}
+
+	return info
+}
