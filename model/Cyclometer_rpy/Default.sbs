@@ -189,7 +189,7 @@ I-Logix-RPY-Archive version 8.7.1 C++ 5066837
 			- direction_ = toEnd2;
 		}
 	}
-	- weakCGTime = 2.11.2013::20:22:31;
+	- weakCGTime = 2.11.2013::20:59:27;
 	- strongCGTime = 2.6.2013::20:34:12;
 	- AssociationElements = { IRPYRawContainer 
 		- size = 3;
@@ -6136,7 +6136,7 @@ isFullResetDone = TRUE";
 				- _id = GUID b951dd55-3a10-4164-bc7a-af7803ced301;
 			}
 			- _lastID = 13;
-			- weakCGTime = 2.11.2013::20:22:35;
+			- weakCGTime = 2.11.2013::20:59:27;
 			- strongCGTime = 2.11.2013::13:6:30;
 			- Operations = { IRPYRawContainer 
 				- size = 9;
@@ -6437,7 +6437,7 @@ isFullResetDone = TRUE";
 					- _myState = 10240;
 					- _name = "statechart_12";
 					- _lastID = 13;
-					- weakCGTime = 2.11.2013::20:22:35;
+					- weakCGTime = 2.11.2013::20:59:27;
 					- strongCGTime = 2.11.2013::13:6:30;
 					- _multiplicity = "";
 					- _itsStateChart = { IHandle 
@@ -6661,7 +6661,7 @@ isFullResetDone = TRUE";
 							- _defaultTrans = GUID 5ec5a99a-f400-4ec8-8d88-bc45f7311b6c;
 						}
 					}
-					- _version = 2.11.2013::15:22:37;
+					- _version = 2.11.2013::15:59:27;
 					- _baseVersion = 1.2.1990::0:0:0;
 					- _diagram = GUID dc0cea4d-f35a-4f0f-97d8-8f70760cbd84;
 					- Views = { IRPYRawContainer 
@@ -6738,7 +6738,7 @@ isFullResetDone = TRUE";
 								}
 							}
 							- _name = "statechartdiagram_0";
-							- _lastModifiedTime = "2.11.2013::20:22:37";
+							- _lastModifiedTime = "2.11.2013::20:59:27";
 							- _graphicChart = { CGIStateChart 
 								- _id = GUID 440fb0ec-37d7-471c-a532-e4f42e91e40b;
 								- m_type = 0;
@@ -7706,7 +7706,7 @@ isFullResetDone = TRUE";
 									- m_anglePoint2 = 0 0 ;
 									- m_line_style = 1;
 									- m_SourcePort = 4 219 ;
-									- m_TargetPort = 1084 228 ;
+									- m_TargetPort = 1096 225 ;
 									- m_pInheritsFrom = { IHandle 
 										- _m2Class = "";
 									}

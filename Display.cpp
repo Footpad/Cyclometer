@@ -21,8 +21,15 @@ void Display::setDataProvider(DataProvider* next) {
 }
 
 void* Display::run() {
+	this->setPriority(50);
+
+	//carry on with display...
 	char cathWriteVal;
 	char decimal;
+
+	int ctr = 0;
+
+	DisplayInfo inf;
 
 	//clear all the anodes.
 	out8(anode, in8(anode) | (0b00001111));
@@ -31,7 +38,8 @@ void* Display::run() {
 		// if the data provider isn't null, update the display
 		if(data != NULL) {
 			//First get the DisplayInfo
-			DisplayInfo inf = data->getData();
+			if(ctr == 0)
+				inf = data->getData();
 
 			//Iterate over the anodes of the display.
 			for(int i = 0; i < NUM_ANODES; i++) {
@@ -55,6 +63,8 @@ void* Display::run() {
 				//clear the anode.
 				out8(anode, (in8(anode) | (1 << i)));
 			}
+
+			ctr = (ctr + 1) % COUNT_INTERVAL;
 		}
 	}
 

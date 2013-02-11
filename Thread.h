@@ -43,6 +43,8 @@ protected:
 	// Flag which will be set when stop() is called.
 	bool killThread;
 
+	void setPriority(int prio);
+
 private:
 	/**
 	 * Static function which calls the Thread's run() method.

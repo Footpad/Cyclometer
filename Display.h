@@ -18,7 +18,9 @@
 // The refresh rate of the screen in Hz
 #define NUM_ANODES (4)
 
-#define SLEEP_PERIOD (2000)
+#define COUNT_INTERVAL (10)
+
+#define SLEEP_PERIOD (4000)
 
 #define DP_CATHODE (0b00000001)
 
