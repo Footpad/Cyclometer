@@ -76,6 +76,15 @@ float PulseScanner::currentSpeed() {
 	return 0.0f;
 }
 
+// TODO: Implement this.
+float PulseScanner::distance() {
+	return 0.0f;
+}
+
+unsigned int PulseScanner::elapsedTime() {
+	return clockCount;
+}
+
 void PulseScanner::incrementCircumference() {
 	circumference = (circumference == 210 ? 190 : circumference + 1);
 }

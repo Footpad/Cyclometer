@@ -15,6 +15,8 @@ public:
 	DisplayTime(StateParent* parent, StateContext* context);
 
 	void accept(Event event);
+
+	DisplayInfo getData();
 };
 
 #endif /* DISPLAYTIME_H_ */

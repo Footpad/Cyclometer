@@ -49,6 +49,10 @@ public:
 
 	float currentSpeed();
 
+	float distance();
+
+	unsigned int elapsedTime();
+
 	void incrementCircumference();
 
 	int getCircumference();
