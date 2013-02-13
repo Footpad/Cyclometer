@@ -19,7 +19,11 @@ void SetCircumferenceHeld::accept(Event event) {
 }
 
 void SetCircumferenceHeld::entryAction() {
+    // Perform the entry action of incrementing the circumference.
 	((CyclometerController*)context)->getPulseScanner()->incrementCircumference();
+    
+    // Call the superclass's entry action to timeout after 1 second.
+    TimeoutState::entryAction();
 }
 
 void SetCircumferenceHeld::timeout() {
