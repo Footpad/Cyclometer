@@ -46,7 +46,7 @@ void* StateContext::run() {
         // Dequeue the next event and accept it.
         Event event = eventQueue.front();
         eventQueue.pop();
-        handle(event);
+        this->handle(event);
 
 		pthread_sleepon_unlock();
 	}

@@ -45,10 +45,7 @@ void* PulseScanner::run() {
 	}
 
 	unsigned int cachedPulse = 0;
-
 	char even = 0;
-	char missedPulses = 0;
-
 	char fakeTimer = 0;
 
 	// clear any lingering interrupts.
@@ -66,21 +63,18 @@ void* PulseScanner::run() {
 			} else if (pulseCount > 0) {
 				if (even) {
 					setWheelLED(true);
-					setCalcLED(true);
 				} else {
 					setWheelLED(false);
-					setCalcLED(false);
 				}
 			}
 			cachedPulse = pulseCount;
+			pulseCount = 0;
+			fakeTimer = 0;
 
 			//update the statistics here...
 			if(calcFlag) {
-				printf("CALCULATING COW!\n");
+				printf("CALCULATING COW: %d\n", &cachedPulse);
 			}
-
-			pulseCount = 0;
-			fakeTimer = 0;
 		} else {
 			if (pulseCount > 0) {
 				if(tripMode == TRIP_AUTO) {
@@ -89,20 +83,26 @@ void* PulseScanner::run() {
 
 				if (even) {
 					setWheelLED(true);
-					setCalcLED(true);
 				} else {
 					setWheelLED(false);
-					setCalcLED(false);
 				}
 			} else if(pulseCount == 0) {
+				if(tripMode == TRIP_AUTO) {
+					calcFlag = false;
+				}
+
 				setWheelLED(false);
-				setCalcLED(false);
 			}
 
 			fakeTimer++;
 		}
-
 		cachedPulse = pulseCount;
+
+		if(even) {
+			setCalcLED(true);
+		} else {
+			setCalcLED(false);
+		}
 
 		usleep(PULSE_SCAN_POLL_RATE);
 		//periodically clear the interrupt here so it can recover if the frequency changes too quickly
@@ -197,6 +197,8 @@ void PulseScanner::setCalcLED(bool high) {
 			} else {
 				out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
 			}
+		} else {
+			out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
 		}
 	} else {
 		if(calcFlag) {
@@ -205,6 +207,8 @@ void PulseScanner::setCalcLED(bool high) {
 			} else {
 				out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
 			}
+		} else {
+			out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
 		}
 	}
 }
