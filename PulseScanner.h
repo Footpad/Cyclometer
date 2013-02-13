@@ -37,6 +37,11 @@ const char LED_MASK[] =
 	(0b00100000)
 };
 
+// The range of wheel circumference values in centimeters.
+#define MAX_WHEEL_CIRCUMFERENCE 210
+#define MIN_WHEEL_CIRCUMFERENCE 190
+
+
 enum DistanceUnit {
 	KM = 1,
 	MILES = 2
@@ -90,6 +95,8 @@ public:
 
 private:
 	void setWheelLED(bool high);
+
+	void setCalcLED(bool high);
 
 	//circumference in CM
 	int circumference;

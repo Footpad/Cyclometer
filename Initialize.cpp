@@ -19,7 +19,13 @@ void Initialize::accept(Event event) {
 }
 
 void Initialize::entryAction() {
+    // Clear the full reset done flag.
 	((CyclometerController*)context)->setFullResetDone(false);
+    
+    // Perform the actual reset action.
+    ((CyclometerController*)context)->getPulseScanner()->scannerReset();
+    
+    // Perform an anonymous transition to the next config state.
 	parent->doTransition(new SetUnits(parent, context), NULL);
 }
 

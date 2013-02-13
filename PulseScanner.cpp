@@ -25,7 +25,7 @@ PulseScanner::~PulseScanner() {
 }
 
 void PulseScanner::scannerReset() {
-	circumference = 210;
+	circumference = MAX_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
@@ -60,24 +60,43 @@ void* PulseScanner::run() {
 
 			if (pulseCount == 0) {
 				setWheelLED(false);
+				if(tripMode == TRIP_AUTO) {
+					calcFlag = false;
+				}
 			} else if (pulseCount > 0) {
 				if (even) {
 					setWheelLED(true);
+					setCalcLED(true);
 				} else {
 					setWheelLED(false);
+					setCalcLED(false);
 				}
 			}
+			cachedPulse = pulseCount;
+
+			//update the statistics here...
+			if(calcFlag) {
+				printf("CALCULATING COW!\n");
+			}
+
 			pulseCount = 0;
 			fakeTimer = 0;
 		} else {
 			if (pulseCount > 0) {
+				if(tripMode == TRIP_AUTO) {
+					calcFlag = true;
+				}
+
 				if (even) {
 					setWheelLED(true);
+					setCalcLED(true);
 				} else {
 					setWheelLED(false);
+					setCalcLED(false);
 				}
 			} else if(pulseCount == 0) {
 				setWheelLED(false);
+				setCalcLED(false);
 			}
 
 			fakeTimer++;
@@ -98,11 +117,9 @@ void* PulseScanner::run() {
 //TODO: this calculation may need to be externalized and only done every so often and stored as an attribute
 //      so that the display doesnt consume a metric ton of computation resources constantly fetching this.
 double PulseScanner::averageSpeed() {
-	//set the scaleFactor to either be for KM or to MILES
-	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
 
 	//return the Units/Hour
-	return (tripDistKM / (clockCount / SECONDS_PER_HOUR)) * scaleFactor;
+	return (distance() / (clockCount / SECONDS_PER_HOUR));
 }
 
 //TODO: implement this?
@@ -112,7 +129,11 @@ double PulseScanner::currentSpeed() {
 
 // TODO: Implement this.
 double PulseScanner::distance() {
-	return 0.0f;
+	//set the scaleFactor to either be for KM or to MILES
+	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
+    
+	//return the Units/Hour
+	return (tripDistKM * scaleFactor);
 }
 
 unsigned int PulseScanner::elapsedTime() {
@@ -120,7 +141,7 @@ unsigned int PulseScanner::elapsedTime() {
 }
 
 void PulseScanner::incrementCircumference() {
-	circumference = (circumference == 210 ? 190 : circumference + 1);
+	circumference = (circumference == MAX_WHEEL_CIRCUMFERENCE ? MIN_WHEEL_CIRCUMFERENCE : circumference + 1);
 }
 
 int PulseScanner::getCircumference() {
@@ -165,5 +186,25 @@ void PulseScanner::setWheelLED(bool high) {
 		out8(ledHandle, in8(ledHandle) | LED_MASK[0]);
 	} else {
 		out8(ledHandle, in8(ledHandle) & ~LED_MASK[0]);
+	}
+}
+
+void PulseScanner::setCalcLED(bool high) {
+	if(tripMode == TRIP_MANUAL) {
+		if(calcFlag) {
+			if (high) {
+				out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
+			} else {
+				out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
+			}
+		}
+	} else {
+		if(calcFlag) {
+			if (high) {
+				out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
+			} else {
+				out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
+			}
+		}
 	}
 }
