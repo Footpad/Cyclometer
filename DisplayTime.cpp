@@ -10,7 +10,7 @@
 #include "CyclometerController.h"
 
 static void toggleTripMode(StateContext* context) {
-	((CyclometerController*)context)->toggleTripMode();
+	((CyclometerController*)context)->getPulseScanner()->toggleTripMode();
 }
 
 DisplayTime::DisplayTime(StateParent* parent, StateContext* context) :

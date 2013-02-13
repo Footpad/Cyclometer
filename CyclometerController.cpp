@@ -10,8 +10,7 @@
 #include "PulseScanner.h"
 
 CyclometerController::CyclometerController(PulseScanner* scanner) :
-	StateContext(), isFullResetDone(false), pulseScanner(scanner), tripMode(
-			TRIP_MANUAL) {
+	StateContext(), isFullResetDone(false), pulseScanner(scanner) {
 	childState = new Initialize(this, this);
 	childState->entryAction();
 
@@ -24,14 +23,6 @@ bool CyclometerController::getIsFullResetDone() {
 
 void CyclometerController::setFullResetDone(bool _isFullResetDone) {
 	isFullResetDone = _isFullResetDone;
-	if (isFullResetDone == false) {
-		tripMode = TRIP_MANUAL;
-	}
-}
-
-void CyclometerController::toggleTripMode() {
-	// TODO: Actually perform what needs to happen.
-	tripMode = (tripMode == TRIP_AUTO) ? TRIP_MANUAL : TRIP_AUTO;
 }
 
 PulseScanner* CyclometerController::getPulseScanner() {
