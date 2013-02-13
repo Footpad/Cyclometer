@@ -15,7 +15,7 @@
 class CyclometerController: public StateContext, DataProvider {
 public:
 	CyclometerController(PulseScanner* scanner);
-
+    
 	/**
 	 * @return whether initialization has completed.
 	 */
@@ -37,6 +37,8 @@ public:
 	DisplayInfo getData();
 
 private:
+    void handle(Event event);
+    
 	// Used to determine which state is next after SetCircumference.
 	bool isFullResetDone;
 

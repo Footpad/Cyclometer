@@ -17,6 +17,15 @@ CyclometerController::CyclometerController(PulseScanner* scanner) :
 	pulseScanner->start();
 }
 
+void CyclometerController::handle(Event event) {
+    // Super hacky hack to handle the start stop button.
+    if (event == evStartStopDepressed) {
+        pulseScanner->toggleCalculate();
+    }
+    // Handle events normally.
+    StateContext::handle(event);
+}
+
 bool CyclometerController::getIsFullResetDone() {
 	return isFullResetDone;
 }

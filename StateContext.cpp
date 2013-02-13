@@ -29,6 +29,10 @@ void StateContext::accept(Event event) {
 	pthread_sleepon_unlock();
 }
 
+void StateContext::handle(Event event) {
+    childState->accept(event);
+}
+
 void* StateContext::run() {
 	// Continuously pop events off our queue and accept them.
 	while (!killThread) {
@@ -38,11 +42,11 @@ void* StateContext::run() {
 		while (eventQueue.empty()) {
 			pthread_sleepon_wait(&eventQueue);
 		}
-
-		// Dequeue the next event and accept it.
-		Event event = eventQueue.front();
-		eventQueue.pop();
-		childState->accept(event);
+        
+        // Dequeue the next event and accept it.
+        Event event = eventQueue.front();
+        eventQueue.pop();
+        handle(event);
 
 		pthread_sleepon_unlock();
 	}

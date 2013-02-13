@@ -32,6 +32,13 @@ public:
 	StateContext* getStateContext();
 
 protected:
+    /**
+     * Tell the child state to handle the event.
+     *
+     * @param event - the event that the child state is accepting.
+     */
+    virtual void handle(Event event);
+    
 	std::queue<Event> eventQueue;
 };
 
