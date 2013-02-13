@@ -17,9 +17,11 @@ ResetTrip::ResetTrip(StateParent* parent, StateContext* context) :
 TimeoutState(parent, context, 2, 0) {}
 
 void ResetTrip::accept(Event event) {
-	if (event == evModeStartStopReleased) {
-		parent->doTransition(new ResetIdle(parent, context), NULL);
-	}
+	if (event == evModeReleased ||
+        event == evSetReleased ||
+        event == evStartStopReleased) {
+        parent->doTransition(new ResetIdle(parent, context), NULL);
+    }
 }
 
 void ResetTrip::timeout() {

@@ -21,6 +21,5 @@ void ResetWatchdog::fullReset() {
 }
 
 void ResetWatchdog::tripValuesReset() {
-	// TODO: Once that interface gets implemented.
-	//cyclometer.resetTripValues();
+	cyclometer->getPulseScanner()->resetTripValues();
 }

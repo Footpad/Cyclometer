@@ -17,9 +17,11 @@ ResetFull::ResetFull(StateParent* parent, StateContext* context) :
 TimeoutState(parent, context, 2, 0) {}
 
 void ResetFull::accept(Event event) {
-	if (event == evAllReleased) {
-		parent->doTransition(new ResetIdle(parent, context), NULL);
-	}
+	if (event == evModeReleased ||
+        event == evSetReleased ||
+        event == evStartStopReleased) {
+        parent->doTransition(new ResetIdle(parent, context), NULL);
+    }
 }
 
 void ResetFull::timeout() {
