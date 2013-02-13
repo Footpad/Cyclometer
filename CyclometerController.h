@@ -27,11 +27,6 @@ public:
 	void setFullResetDone(bool isFullResetDone);
 
 	/**
-	 * Changes from auto to manual trip modes or vice versa.
-	 */
-	void toggleTripMode();
-
-	/**
 	 * @return a reference to the pulse scanner.
 	 */
 	PulseScanner* getPulseScanner();
@@ -47,9 +42,6 @@ private:
 
 	// This controller's pulse scanner.
 	PulseScanner* pulseScanner;
-
-	// Which trip mode is currently being displayed.
-	TripMode tripMode;
 };
 
 #endif /* CYCLOMETERCONTROLLER_H_ */

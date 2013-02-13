@@ -11,7 +11,7 @@
 #include "PulseScanner.h"
 
 static void toggleTripMode(StateContext* context) {
-	((CyclometerController*)context)->toggleTripMode();
+	((CyclometerController*)context)->getPulseScanner()->toggleTripMode();
 }
 
 DisplaySpeed::DisplaySpeed(StateParent* parent, StateContext* context) :
