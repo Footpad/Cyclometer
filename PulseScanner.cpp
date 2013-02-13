@@ -26,7 +26,7 @@ PulseScanner::~PulseScanner() {
 }
 
 void PulseScanner::scannerReset() {
-	circumference = 210;
+	circumference = MAX_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
@@ -64,11 +64,8 @@ void* PulseScanner::run() {
 //TODO: this calculation may need to be externalized and only done every so often and stored as an attribute
 //      so that the display doesnt consume a metric ton of computation resources constantly fetching this.
 float PulseScanner::averageSpeed() {
-	//set the scaleFactor to either be for KM or to MILES
-	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
-
 	//return the Units/Hour
-	return (tripDistKM / (clockCount / SECONDS_PER_HOUR)) * scaleFactor;
+	return (distance() / (clockCount / SECONDS_PER_HOUR));
 }
 
 //TODO: implement this?
@@ -76,9 +73,12 @@ float PulseScanner::currentSpeed() {
 	return 0.0f;
 }
 
-// TODO: Implement this.
 float PulseScanner::distance() {
-	return 0.0f;
+	//set the scaleFactor to either be for KM or to MILES
+	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
+    
+	//return the Units/Hour
+	return (tripDistKM * scaleFactor);
 }
 
 unsigned int PulseScanner::elapsedTime() {
@@ -86,7 +86,7 @@ unsigned int PulseScanner::elapsedTime() {
 }
 
 void PulseScanner::incrementCircumference() {
-	circumference = (circumference == 210 ? 190 : circumference + 1);
+	circumference = (circumference == MAX_WHEEL_CIRCUMFERENCE ? MIN_WHEEL_CIRCUMFERENCE : circumference + 1);
 }
 
 int PulseScanner::getCircumference() {

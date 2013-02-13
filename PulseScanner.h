@@ -22,6 +22,10 @@
 #define KM_TO_MILES (0.621371)
 #define SECONDS_PER_HOUR (3600)
 
+// The range of wheel circumference values in centimeters.
+#define MAX_WHEEL_CIRCUMFERENCE 210
+#define MIN_WHEEL_CIRCUMFERENCE 190
+
 enum DistanceUnit {
 	KM = 1,
 	MILES = 2
