@@ -11,7 +11,7 @@
 #include "State.h"
 #include "DataProvider.h"
 
-class DisplayDistance: public State, DataProvider {
+class DisplayDistance: public State {
 public:
 	DisplayDistance(StateParent* parent, StateContext* context);
 

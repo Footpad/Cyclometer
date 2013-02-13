@@ -22,6 +22,21 @@
 #define KM_TO_MILES (0.621371)
 #define SECONDS_PER_HOUR (3600)
 
+//defined as the poll rate in microseconds
+#define PULSE_SCAN_POLL_RATE (500000)
+
+#define MAX_FAKE_TIMEOUT (10)
+
+const char LED_MASK[] =
+{
+	// Wheel LED mask
+	(0b10000000),
+	// Auto LED mask
+	(0b01000000),
+	// Units LED mask
+	(0b00100000)
+};
+
 enum DistanceUnit {
 	KM = 1,
 	MILES = 2
@@ -35,7 +50,7 @@ enum TripMode {
 
 class PulseScanner : public Thread {
 public:
-	PulseScanner(uintptr_t cmd);
+	PulseScanner(uintptr_t cmd, uintptr_t led);
 	virtual ~PulseScanner();
 
 	/**
@@ -45,11 +60,11 @@ public:
 
 	static const struct sigevent * interruptReceived(void *arg, int id);
 
-	float averageSpeed();
+	double averageSpeed();
 
-	float currentSpeed();
+	double currentSpeed();
 
-	float distance();
+	double distance();
 
 	unsigned int elapsedTime();
 
@@ -74,6 +89,8 @@ public:
 	void toggleCalculate();
 
 private:
+	void setWheelLED(bool high);
+
 	//circumference in CM
 	int circumference;
 
@@ -100,6 +117,9 @@ private:
 
 	//the calculate flag
 	bool calcFlag;
+
+	//LED handle
+	uintptr_t ledHandle;
 };
 
 #endif /* PULSESCANNER_H_ */

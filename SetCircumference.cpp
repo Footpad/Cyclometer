@@ -26,6 +26,8 @@ void SetCircumference::accept(Event event) {
 		} else {
 			parent->doTransition(new NormalOperation(parent, context, NULL), finishInitialization);
 		}
+	} else if (event == evFullReset) {
+		parent->doTransition(new Initialize(parent, context), NULL);
 	} else {
 		childState->accept(event);
 	}

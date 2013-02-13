@@ -22,6 +22,8 @@ void SetUnits::accept(Event event) {
 		parent->doTransition(new SetUnits(parent, context), toggleUnits);
 	} else if (event == evSetDepressed) {
 		parent->doTransition(new SetCircumference(parent, context), NULL);
+	} else if (event == evFullReset) {
+		parent->doTransition(new Initialize(parent, context), NULL);
 	}
 }
 

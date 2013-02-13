@@ -20,7 +20,7 @@
 
 #define COUNT_INTERVAL (10)
 
-#define SLEEP_PERIOD (4000)
+#define SLEEP_PERIOD (3500)
 
 #define DP_CATHODE (0b00000001)
 

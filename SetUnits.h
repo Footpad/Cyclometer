@@ -10,8 +10,10 @@
 
 #include "State.h"
 #include "DataProvider.h"
+#include "Initialize.h"
 
-class SetUnits: public State, DataProvider {
+
+class SetUnits: public State {
 public:
 	SetUnits(StateParent* parent, StateContext* context);
 

@@ -10,8 +10,9 @@
 
 #include "State.h"
 #include "DataProvider.h"
+#include "Initialize.h"
 
-class SetCircumference: public State, DataProvider {
+class SetCircumference: public State {
 public:
 	SetCircumference(StateParent* parent, StateContext* context);
 

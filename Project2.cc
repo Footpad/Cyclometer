@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 	out8(daq_dir_handle, SET_DIRECTION);
 
 	//Start the pulse scanner...
-	PulseScanner pulseScanner(cmd_handle);
+	PulseScanner pulseScanner(cmd_handle, daq_portb_handle);
 
 	//Start the pushbutton scanner...
 	PushbuttonScanner pushbuttonScanner(daq_portc_handle);
@@ -109,7 +109,6 @@ int main(int argc, char *argv[]) {
 	ResetWatchdog resetWatchdog(&cyclometerController);
 
 	//Start the display thread.
-	// TODO: Figure out why the current implementation of DataProvider is crashing.
 	Display display((DataProvider*)&cyclometerController, daq_porta_handle, daq_portb_handle);
 	//Display display(NULL, daq_porta_handle, daq_portb_handle);
 	//Start the display
