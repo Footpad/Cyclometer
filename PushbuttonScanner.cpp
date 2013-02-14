@@ -22,7 +22,7 @@ void* PushbuttonScanner::run() {
 
 	int i;
 
-	printf("PushbuttonScanner running\n");
+	//printf("PushbuttonScanner running\n");
 	while (!killThread) {
 		//Wait for there to be a change on the pushbutton inputs.
 		while ((lastRead & LOW_MASK) == (in8(input_port_handle) & LOW_MASK)) {

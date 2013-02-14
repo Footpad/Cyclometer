@@ -21,7 +21,7 @@ public:
 private:
 	// Writes the speed as specified in the requirements to
 	// the given two digits and two decimal points.
-	void formatSpeed(float speed, int* digits, bool* decimals);
+	void formatSpeed(double speed, int* digits, bool* decimals);
 };
 
 #endif /* DISPLAYSPEED_H_ */

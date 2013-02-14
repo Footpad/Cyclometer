@@ -156,6 +156,7 @@ void PulseScanner::resetTripValues() {
 
 void PulseScanner::toggleUnits() {
 	units = (units == KM ? MILES : KM);
+	updateUnitsLED();
 }
 
 DistanceUnit PulseScanner::getUnits() {
@@ -210,5 +211,14 @@ void PulseScanner::setCalcLED(bool high) {
 		} else {
 			out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
 		}
+	}
+}
+
+void PulseScanner::updateUnitsLED() {
+	// LED on for miles, LED off for km.
+	if (units == MILES) {
+		out8(ledHandle, in8(ledHandle) | LED_MASK[2]);
+	} else {
+		out8(ledHandle, in8(ledHandle) & ~LED_MASK[2]);
 	}
 }

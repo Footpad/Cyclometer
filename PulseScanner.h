@@ -98,6 +98,8 @@ private:
 
 	void setCalcLED(bool high);
 
+	void updateUnitsLED();
+
 	//circumference in CM
 	int circumference;
 

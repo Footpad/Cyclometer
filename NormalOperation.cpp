@@ -29,3 +29,7 @@ void NormalOperation::accept(Event event) {
 		childState->accept(event);
 	}
 }
+
+DisplayInfo NormalOperation::getData() {
+	return childState->getData();
+}

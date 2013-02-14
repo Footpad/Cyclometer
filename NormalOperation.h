@@ -18,6 +18,8 @@ public:
 	NormalOperation(StateParent* parent, StateContext* context, const char *initialState);
 
 	void accept(Event event);
+
+	DisplayInfo getData();
 };
 
 #endif /* NORMALOPERATION_H_ */

@@ -9,6 +9,7 @@
 #include "DisplayDistance.h"
 #include "CyclometerController.h"
 #include "PulseScanner.h"
+#include <math.h>
 
 static void toggleTripMode(StateContext* context) {
 	((CyclometerController*)context)->getPulseScanner()->toggleTripMode();
@@ -39,12 +40,13 @@ DisplayInfo DisplaySpeed::getData() {
 	return info;
 }
 
-void DisplaySpeed::formatSpeed(float speed, int* digits, bool* decimals) {
+void DisplaySpeed::formatSpeed(double speed, int* digits, bool* decimals) {
 	// Given a speed "AB.CD", if the speed is >= 10,
 	// display "AB", otherwise display "B.C"
-	bool isOverTen = speed >= 10;
-	digits[0] = isOverTen ? (int)speed % 10 : (int)(speed * 10) % 10;
-	digits[1] = isOverTen ? (int)(speed / 10) % 10 : (int)speed % 10;
+	// Speeds are rounded to the nearest minimum sig fig.
+	bool isOverTen = lround(speed) >= 10;
+	digits[0] = isOverTen ? lround(speed) % 10 : lround(speed * 10) % 10;
+	digits[1] = isOverTen ? (lround(speed) / 10) % 10 : lround(speed) % 10;
 	decimals[0] = false;
 	decimals[1] = isOverTen ? false : true;
 }

@@ -11,6 +11,7 @@
 #include "NormalOperation.h"
 #include "PulseScanner.h"
 #include "CyclometerController.h"
+#include <math.h>
 
 DisplayDistance::DisplayDistance(StateParent* parent, StateContext* context) :
 State(parent, context) {}
@@ -37,9 +38,12 @@ DisplayInfo DisplayDistance::getData() {
 	info.dp[1] = true;
 
 	// The get the distance number.
-	float distance = ((CyclometerController*)context)->getPulseScanner()->distance();
+	double distance = ((CyclometerController*)context)->getPulseScanner()->distance();
 
-	info.val[0] = (int)(distance * 10) % 10; // Tenths
+	// Round the distance to the nearest tenth.
+	distance = round(distance * 10.0f) / 10.0f;
+
+	info.val[0] = lround(distance * 10.0f) % 10; // Tenths
 	info.val[1] = (int)distance % 10; // Ones
 
 	if (distance >= 10) {

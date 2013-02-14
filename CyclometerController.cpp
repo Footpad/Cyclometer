@@ -39,13 +39,6 @@ PulseScanner* CyclometerController::getPulseScanner() {
 }
 
 DisplayInfo CyclometerController::getData() {
-	DataProvider* dp = (DataProvider*)childState;
-	DisplayInfo inf = dp->getData();
-//	DisplayInfo inf;
-//	for(int i = 0; i < NUM_DIGITS; i++) {
-//		inf.val[i] = i;
-//		inf.dp[i] = false;
-//	}
-	return inf;
+	return ((DataProvider*)childState)->getData();
 }
 
