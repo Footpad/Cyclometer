@@ -29,6 +29,8 @@ void PulseScanner::scannerReset() {
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
+	calcClockCount = 0;
+	speed = 0;
 	units = KM;
 	tripMode = TRIP_MANUAL;
 	calcFlag = false;
@@ -44,64 +46,39 @@ void* PulseScanner::run() {
 		exit(-1);
 	}
 
-	unsigned int cachedPulse = 0;
 	char even = 0;
-	char fakeTimer = 0;
 
 	// clear any lingering interrupts.
 	out8(cmd_handle, (0b00001111));
 
+	// Timer for calculate functionality.
+	timer_t timer;
+
+	// Create a timeout for the push button hold.
+	struct sigevent event;
+	SIGEV_THREAD_INIT(&event, PulseScanner::calculate, this, NULL);
+
+	// Configure the timeout spec.
+	itimerspec timerSpec;
+	timerSpec.it_value.tv_sec = MAX_TIME_CALC;
+	timerSpec.it_value.tv_nsec = 0;
+	timerSpec.it_interval.tv_sec = MAX_TIME_CALC;
+	timerSpec.it_interval.tv_nsec = 0;
+
+	// Create and set the timer.
+	timer_create(CLOCK_REALTIME, &event, &timer);
+	timer_settime(timer, 0, &timerSpec, NULL);
+
 	//while running...
 	while (!killThread) {
-		if (fakeTimer == MAX_FAKE_TIMEOUT) {
 
-			if (pulseCount == 0) {
-				setWheelLED(false);
-				if(tripMode == TRIP_AUTO) {
-					calcFlag = false;
-				}
-			} else if (pulseCount > 0) {
-				if (even) {
-					setWheelLED(true);
-				} else {
-					setWheelLED(false);
-				}
-			}
-			cachedPulse = pulseCount;
-			pulseCount = 0;
-			fakeTimer = 0;
+		//so long as we have gotten pulses...keep flashing the LEDs for calculating (if applicable)
+		// and the calculating LED (if applicable)
+		flashLEDs(even);
 
-			//update the statistics here...
-			if(calcFlag) {
-				printf("CALCULATING COW: %d\n", &cachedPulse);
-			}
-		} else {
-			if (pulseCount > 0) {
-				if(tripMode == TRIP_AUTO) {
-					calcFlag = true;
-				}
-
-				if (even) {
-					setWheelLED(true);
-				} else {
-					setWheelLED(false);
-				}
-			} else if(pulseCount == 0) {
-				if(tripMode == TRIP_AUTO) {
-					calcFlag = false;
-				}
-
-				setWheelLED(false);
-			}
-
-			fakeTimer++;
-		}
-		cachedPulse = pulseCount;
-
-		if(even) {
-			setCalcLED(true);
-		} else {
-			setCalcLED(false);
+		//increment the clock count (since our poll period is half a second)
+		if (calcFlag && even == 0) {
+			clockCount += 1;
 		}
 
 		usleep(PULSE_SCAN_POLL_RATE);
@@ -114,24 +91,25 @@ void* PulseScanner::run() {
 	return NULL;
 }
 
-//TODO: this calculation may need to be externalized and only done every so often and stored as an attribute
-//      so that the display doesnt consume a metric ton of computation resources constantly fetching this.
 double PulseScanner::averageSpeed() {
+	//set the scaleFactor to either be for KM or to MILES
+	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
 
 	//return the Units/Hour
-	return (distance() / (clockCount / SECONDS_PER_HOUR));
+	return (distance() / ((double)calcClockCount / (double)SECONDS_PER_HOUR)) * scaleFactor;
 }
 
-//TODO: implement this?
 double PulseScanner::currentSpeed() {
-	return 0.0f;
+	//set the scaleFactor to either be for KM or to MILES
+	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
+
+	return (speed * scaleFactor);
 }
 
-// TODO: Implement this.
 double PulseScanner::distance() {
 	//set the scaleFactor to either be for KM or to MILES
 	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
-    
+
 	//return the Units/Hour
 	return (tripDistKM * scaleFactor);
 }
@@ -141,7 +119,9 @@ unsigned int PulseScanner::elapsedTime() {
 }
 
 void PulseScanner::incrementCircumference() {
-	circumference = (circumference == MAX_WHEEL_CIRCUMFERENCE ? MIN_WHEEL_CIRCUMFERENCE : circumference + 1);
+	circumference
+			= (circumference == MAX_WHEEL_CIRCUMFERENCE ? MIN_WHEEL_CIRCUMFERENCE
+					: circumference + 1);
 }
 
 int PulseScanner::getCircumference() {
@@ -152,6 +132,7 @@ void PulseScanner::resetTripValues() {
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
+	calcClockCount = 0;
 }
 
 void PulseScanner::toggleUnits() {
@@ -165,10 +146,6 @@ DistanceUnit PulseScanner::getUnits() {
 
 uintptr_t PulseScanner::getCmdHandle() {
 	return cmd_handle;
-}
-
-void PulseScanner::incrementPulseCount() {
-	pulseCount++;
 }
 
 void PulseScanner::toggleTripMode() {
@@ -191,8 +168,8 @@ void PulseScanner::setWheelLED(bool high) {
 }
 
 void PulseScanner::setCalcLED(bool high) {
-	if(tripMode == TRIP_MANUAL) {
-		if(calcFlag) {
+	if (tripMode == TRIP_MANUAL) {
+		if (calcFlag) {
 			if (high) {
 				out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
 			} else {
@@ -202,7 +179,7 @@ void PulseScanner::setCalcLED(bool high) {
 			out8(ledHandle, in8(ledHandle) & ~LED_MASK[1]);
 		}
 	} else {
-		if(calcFlag) {
+		if (calcFlag) {
 			if (high) {
 				out8(ledHandle, in8(ledHandle) | LED_MASK[1]);
 			} else {
@@ -220,5 +197,48 @@ void PulseScanner::updateUnitsLED() {
 		out8(ledHandle, in8(ledHandle) | LED_MASK[2]);
 	} else {
 		out8(ledHandle, in8(ledHandle) & ~LED_MASK[2]);
+	}
+}
+
+void PulseScanner::flashLEDs(int even) {
+	if (pulseCount > 0) {
+		if (tripMode == TRIP_AUTO) {
+			calcFlag = true;
+		}
+
+		if (even) {
+			setWheelLED(true);
+		} else {
+			setWheelLED(false);
+		}
+	} else if (pulseCount == 0) {
+		if (tripMode == TRIP_AUTO) {
+			calcFlag = false;
+		}
+		setWheelLED(false);
+	}
+
+	if (even) {
+		setCalcLED(true);
+	} else {
+		setCalcLED(false);
+	}
+}
+
+void PulseScanner::calculate(sigval arg) {
+	PulseScanner* self = (PulseScanner*)arg.sival_ptr;
+
+	unsigned int cachedPulse = self->pulseCount;
+	self->pulseCount = 0;
+
+	double td = ((double)self->circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
+	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
+	self->speed = s;
+
+	self->calcClockCount += MAX_TIME_CALC;
+
+	//update the trip distance here when calculating...
+	if (self->calcFlag) {
+		self->tripDistKM += td;
 	}
 }

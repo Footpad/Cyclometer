@@ -5,13 +5,13 @@ I-Logix-RPY-Archive version 8.7.1 * 5066837
 	}
 	- isLoadOnDemand = 0;
 	- myViewsWithID = { IRPYRawContainer 
-		- size = 1;
+		- size = 3;
 		- value = 
 		{ CGEMdiDiagramParams 
 			- _placement = { CCommon_WINDOWPLACEMENT 
 				- m_nLength = 44;
-				- m_nFlags = 2;
-				- m_showCmd = 3;
+				- m_nFlags = 0;
+				- m_showCmd = 1;
 				- m_ptMinPositionX = -1;
 				- m_ptMinPositionY = -1;
 				- m_ptMaxPositionX = -8;
@@ -21,7 +21,7 @@ I-Logix-RPY-Archive version 8.7.1 * 5066837
 				- m_nRight = 831;
 				- m_nBottom = 602;
 			}
-			- _wasOpenedOnCloseProject = 1;
+			- _wasOpenedOnCloseProject = 0;
 			- _theDiagram = { IHandle 
 				- _m2Class = "IMSC";
 				- _filename = "";
@@ -30,10 +30,66 @@ I-Logix-RPY-Archive version 8.7.1 * 5066837
 				- _name = "AutoCalc";
 				- _id = GUID aacb45b6-bf7d-4e25-97c8-0dcb663ba397;
 			}
-			- _UpLeft = 0 40 ;
-			- _DownRight = 914 682 ;
+			- _UpLeft = 0 0 ;
+			- _DownRight = 1136 676 ;
 			- _instanceName = "";
 			- m_nDiagramIndex = 0;
+		}
+		{ CGEMdiDiagramParams 
+			- _placement = { CCommon_WINDOWPLACEMENT 
+				- m_nLength = 44;
+				- m_nFlags = 2;
+				- m_showCmd = 3;
+				- m_ptMinPositionX = -1;
+				- m_ptMinPositionY = -1;
+				- m_ptMaxPositionX = -8;
+				- m_ptMaxPositionY = -30;
+				- m_nLeft = 75;
+				- m_nTop = 75;
+				- m_nRight = 785;
+				- m_nBottom = 533;
+			}
+			- _wasOpenedOnCloseProject = 1;
+			- _theDiagram = { IHandle 
+				- _m2Class = "IStateChartDiagram";
+				- _filename = "Default.sbs";
+				- _subsystem = "Default";
+				- _class = "ResetWatchdog";
+				- _name = "StatechartDiagram";
+				- _id = GUID f1770087-6431-4784-bbb4-4dc9b4e0ba56;
+			}
+			- _UpLeft = 0 0 ;
+			- _DownRight = 914 662 ;
+			- _instanceName = "";
+			- m_nDiagramIndex = 0;
+		}
+		{ CGEMdiDiagramParams 
+			- _placement = { CCommon_WINDOWPLACEMENT 
+				- m_nLength = 44;
+				- m_nFlags = 0;
+				- m_showCmd = 1;
+				- m_ptMinPositionX = -1;
+				- m_ptMinPositionY = -1;
+				- m_ptMaxPositionX = -8;
+				- m_ptMaxPositionY = -30;
+				- m_nLeft = 50;
+				- m_nTop = 50;
+				- m_nRight = 760;
+				- m_nBottom = 508;
+			}
+			- _wasOpenedOnCloseProject = 1;
+			- _theDiagram = { IHandle 
+				- _m2Class = "IDiagram";
+				- _filename = "";
+				- _subsystem = "";
+				- _class = "";
+				- _name = "Model1";
+				- _id = GUID b951dd55-3a10-4164-bc7a-af7803ced301;
+			}
+			- _UpLeft = 0 0 ;
+			- _DownRight = 673 399 ;
+			- _instanceName = "";
+			- m_nDiagramIndex = 1;
 		}
 	}
 	- _fullName = "Z:\\embeddedAgain\\Cyclometer\\model\\Cyclometer";

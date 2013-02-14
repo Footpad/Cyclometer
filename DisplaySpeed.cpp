@@ -34,8 +34,8 @@ DisplayInfo DisplaySpeed::getData() {
 
 	// Get and format the speeds to the appropriate digits.
 	// Hooray pointer arithmetic!
-	formatSpeed(scanner->currentSpeed(), info.val, info.dp);
-	formatSpeed(scanner->averageSpeed(), info.val + 2, info.dp + 2);
+	formatSpeed(scanner->currentSpeed(), info.val + 2, info.dp + 2);
+	formatSpeed(scanner->averageSpeed(), info.val, info.dp);
 
 	return info;
 }

@@ -14,7 +14,15 @@
 #include <sys/neutrino.h> /* for ThreadCtl() */
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <sys/siginfo.h>
+
 #include "Thread.h"
+
+//the time to wait between calculations in seconds
+#define MAX_TIME_CALC (5)
+
+
 
 /* DAQs interrupt vector */
 #define DAQ_IRQ     (0x05)
@@ -24,8 +32,15 @@
 
 //defined as the poll rate in microseconds
 #define PULSE_SCAN_POLL_RATE (500000)
+#define MICROS_PER_SECONDS  (1000000)
 
-#define MAX_FAKE_TIMEOUT (10)
+//defines the timeout period
+#define MAX_FAKE_TIMEOUT (MICROS_PER_SECONDS / (PULSE_SCAN_POLL_RATE) * MAX_TIME_CALC )
+
+#define SEC_PER_HOUR (3600)
+
+#define METERS_PER_CM (.01)
+#define KM_PER_METER (.001)
 
 const char LED_MASK[] =
 {
@@ -87,18 +102,20 @@ public:
 
 	uintptr_t getCmdHandle();
 
-	void incrementPulseCount();
-
 	void scannerReset();
 
 	void toggleCalculate();
 
 private:
+	static void calculate(sigval arg);
+
 	void setWheelLED(bool high);
 
 	void setCalcLED(bool high);
 
 	void updateUnitsLED();
+
+	void flashLEDs(int even);
 
 	//circumference in CM
 	int circumference;
@@ -108,6 +125,9 @@ private:
 
 	//count of the elapse time in seconds
 	unsigned int clockCount;
+
+	//count of the elapse time in seconds
+	unsigned int calcClockCount;
 
 	//the units being used.
 	DistanceUnit units;
@@ -126,6 +146,9 @@ private:
 
 	//the calculate flag
 	bool calcFlag;
+
+	//the current speed as based on the pulses received over the last time interval
+	double speed;
 
 	//LED handle
 	uintptr_t ledHandle;
