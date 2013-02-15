@@ -123,8 +123,11 @@ private:
 	//the units being used.
 	DistanceUnit units;
 
-	//the number of pulses received via interrupt
-	volatile unsigned int pulseCount;
+	//the number of pulses received via interrupt used to calculate current speed (5 second reset)
+	volatile unsigned int speedPulseCount;
+
+	//the number of pulses received via interrupt used to calculate trip distance (1 second when calculating)
+	volatile unsigned int distPulseCount;
 
 	//interrupt vector ID
 	int interruptID;

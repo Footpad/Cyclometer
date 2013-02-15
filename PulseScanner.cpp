@@ -9,7 +9,10 @@
 
 const struct sigevent * PulseScanner::interruptReceived(void *arg, int id) {
 	PulseScanner* self = (PulseScanner*) arg;
-	self->pulseCount++;
+	self->speedPulseCount++;
+
+	if(self->calcFlag)
+		self->distPulseCount++;
 
 	//clear the interrupt.
 	out8(self->cmd_handle, (0b00001111));
@@ -28,7 +31,8 @@ void PulseScanner::scannerReset() {
 	circumference = MAX_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
-	pulseCount = 0;
+	speedPulseCount = 0;
+	distPulseCount = 0;
 	speed = 0;
 	units = KM;
 	tripMode = TRIP_MANUAL;
@@ -75,6 +79,8 @@ void* PulseScanner::run() {
 
 	out8(ledHandle, in8(ledHandle) & ~ledMask);
 
+	unsigned int cachedPulse = 0;
+
 	//while running...
 	while (!killThread) {
 
@@ -82,9 +88,13 @@ void* PulseScanner::run() {
 		// and the calculating LED (if applicable)
 		flashLEDs(even);
 
-		//increment the clock count (since our poll period is half a second)
+		//increment the clock count and distance traveled (since our poll period is half a second)
 		if (calcFlag && even == 0) {
 			clockCount += 1;
+			cachedPulse = distPulseCount;
+			distPulseCount = 0;
+
+			tripDistKM += (circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 		}
 
 		usleep(PULSE_SCAN_POLL_RATE);
@@ -98,11 +108,8 @@ void* PulseScanner::run() {
 }
 
 double PulseScanner::averageSpeed() {
-	//set the scaleFactor to either be for KM or to MILES
-	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
-
 	//return the Units/Hour
-	return (distance() / ((double)clockCount / (double)SECONDS_PER_HOUR)) * scaleFactor;
+	return (distance() / ((double)clockCount / (double)SECONDS_PER_HOUR));
 }
 
 double PulseScanner::currentSpeed() {
@@ -137,7 +144,8 @@ int PulseScanner::getCircumference() {
 void PulseScanner::resetTripValues() {
 	tripDistKM = 0;
 	clockCount = 0;
-	pulseCount = 0;
+	speedPulseCount = 0;
+	distPulseCount = 0;
 }
 
 void PulseScanner::toggleUnits() {
@@ -206,7 +214,7 @@ void PulseScanner::updateUnitsLED() {
 }
 
 void PulseScanner::flashLEDs(int even) {
-	if (pulseCount > 0) {
+	if (speedPulseCount > 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = true;
 		}
@@ -216,7 +224,7 @@ void PulseScanner::flashLEDs(int even) {
 		} else {
 			setWheelLED(false);
 		}
-	} else if (pulseCount == 0) {
+	} else if (speedPulseCount == 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = false;
 		}
@@ -233,15 +241,10 @@ void PulseScanner::flashLEDs(int even) {
 void PulseScanner::calculate(sigval arg) {
 	PulseScanner* self = (PulseScanner*)arg.sival_ptr;
 
-	unsigned int cachedPulse = self->pulseCount;
-	self->pulseCount = 0;
+	unsigned int cachedPulse = self->speedPulseCount;
+	self->speedPulseCount = 0;
 
 	double td = ((double)self->circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
 	self->speed = s;
-
-	//update the trip distance here when calculating...
-	if (self->calcFlag) {
-		self->tripDistKM += td;
-	}
 }
