@@ -21,5 +21,6 @@ void ResetWatchdog::fullReset() {
 }
 
 void ResetWatchdog::tripValuesReset() {
-	cyclometer->getPulseScanner()->resetTripValues();
+	EventCenter::DefaultEventCenter()->sendEvent(evTripReset);
+	//cyclometer->getPulseScanner()->resetTripValues();
 }

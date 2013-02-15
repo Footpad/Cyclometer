@@ -9,6 +9,7 @@
 #include "DisplaySpeed.h"
 #include "DisplayDistance.h"
 #include "Initialize.h"
+#include "CyclometerController.h"
 
 const char *kDisplayDistanceState = "DisplayDistance";
 
@@ -25,6 +26,8 @@ State(parent, context) {
 void NormalOperation::accept(Event event) {
 	if (event == evFullReset) {
 		parent->doTransition(new Initialize(parent, context), NULL);
+	} else if(event == evTripReset) {
+		((CyclometerController*)context)->getPulseScanner()->resetTripValues();
 	} else {
 		childState->accept(event);
 	}

@@ -25,6 +25,7 @@ enum EventTypes {
 
 	// Events internal to the system.
 	evFullReset,
+	evTripReset,
 
 	// External push button events.
 	evSetDepressed,
