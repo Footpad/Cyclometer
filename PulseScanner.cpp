@@ -28,6 +28,7 @@ PulseScanner::~PulseScanner() {
 }
 
 void PulseScanner::scannerReset() {
+	calcCircumference = MAX_WHEEL_CIRCUMFERENCE;
 	circumference = MAX_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
@@ -37,6 +38,7 @@ void PulseScanner::scannerReset() {
 	units = KM;
 	tripMode = TRIP_MANUAL;
 	calcFlag = false;
+	settingCir = false;
 }
 
 void* PulseScanner::run() {
@@ -94,7 +96,7 @@ void* PulseScanner::run() {
 			cachedPulse = distPulseCount;
 			distPulseCount = 0;
 
-			tripDistKM += (circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
+			tripDistKM += (calcCircumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 		}
 
 		usleep(PULSE_SCAN_POLL_RATE);
@@ -132,13 +134,22 @@ unsigned int PulseScanner::elapsedTime() {
 }
 
 void PulseScanner::incrementCircumference() {
+	settingCir = true;
 	circumference
 			= (circumference == MAX_WHEEL_CIRCUMFERENCE ? MIN_WHEEL_CIRCUMFERENCE
 					: circumference + 1);
 }
 
+void PulseScanner::setCircumference() {
+	settingCir = false;
+	calcCircumference = circumference;
+}
+
 int PulseScanner::getCircumference() {
-	return circumference;
+	if(settingCir) {
+		return circumference;
+	}
+	return calcCircumference;
 }
 
 void PulseScanner::resetTripValues() {
@@ -244,7 +255,7 @@ void PulseScanner::calculate(sigval arg) {
 	unsigned int cachedPulse = self->speedPulseCount;
 	self->speedPulseCount = 0;
 
-	double td = ((double)self->circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
+	double td = ((double)self->calcCircumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
 	self->speed = s;
 }

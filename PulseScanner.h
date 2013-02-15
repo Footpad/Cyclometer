@@ -86,6 +86,8 @@ public:
 
 	int getCircumference();
 
+	void setCircumference();
+
 	void resetTripValues();
 
 	void toggleTripMode();
@@ -111,8 +113,14 @@ private:
 
 	void flashLEDs(int even);
 
-	//circumference in CM
+	//circumference in CM (used for calculations)
+	int calcCircumference;
+
+	//circumference in CM (used for setting)
 	int circumference;
+
+	//boolean to say whether we are setting the circumference or not
+	bool settingCir;
 
 	//the trip distance in KM
 	double tripDistKM;

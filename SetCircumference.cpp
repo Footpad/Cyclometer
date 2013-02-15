@@ -21,6 +21,7 @@ State(parent, context) {
 
 void SetCircumference::accept(Event event) {
 	if (event == evSetDepressed) {
+		((CyclometerController*)context)->getPulseScanner()->setCircumference();
 		if (((CyclometerController*)context)->getIsFullResetDone()) {
 			parent->doTransition(new NormalOperation(parent, context, kDisplayDistanceState), NULL);
 		} else {
