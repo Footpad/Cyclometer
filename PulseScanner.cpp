@@ -29,7 +29,6 @@ void PulseScanner::scannerReset() {
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
-	calcClockCount = 0;
 	speed = 0;
 	units = KM;
 	tripMode = TRIP_MANUAL;
@@ -69,6 +68,13 @@ void* PulseScanner::run() {
 	timer_create(CLOCK_REALTIME, &event, &timer);
 	timer_settime(timer, 0, &timerSpec, NULL);
 
+	char ledMask = 0;
+	for(int i = 0; i < 3; i++) {
+		ledMask |= LED_MASK[i];
+	}
+
+	out8(ledHandle, in8(ledHandle) & ~ledMask);
+
 	//while running...
 	while (!killThread) {
 
@@ -96,7 +102,7 @@ double PulseScanner::averageSpeed() {
 	double scaleFactor = (units == KM ? 1 : KM_TO_MILES);
 
 	//return the Units/Hour
-	return (distance() / ((double)calcClockCount / (double)SECONDS_PER_HOUR)) * scaleFactor;
+	return (distance() / ((double)clockCount / (double)SECONDS_PER_HOUR)) * scaleFactor;
 }
 
 double PulseScanner::currentSpeed() {
@@ -132,7 +138,6 @@ void PulseScanner::resetTripValues() {
 	tripDistKM = 0;
 	clockCount = 0;
 	pulseCount = 0;
-	calcClockCount = 0;
 }
 
 void PulseScanner::toggleUnits() {
@@ -234,8 +239,6 @@ void PulseScanner::calculate(sigval arg) {
 	double td = ((double)self->circumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
 	self->speed = s;
-
-	self->calcClockCount += MAX_TIME_CALC;
 
 	//update the trip distance here when calculating...
 	if (self->calcFlag) {
