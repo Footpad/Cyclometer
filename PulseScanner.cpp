@@ -63,22 +63,22 @@ void* PulseScanner::run() {
 	out8(cmd_handle, (0b00001111));
 
 	// Timer for calculate functionality.
-	timer_t timer;
+	timer_t oneSecTimer;
 
 	// Create a timeout for the push button hold.
 	struct sigevent event;
 	SIGEV_THREAD_INIT(&event, PulseScanner::calculate, this, NULL);
 
 	// Configure the timeout spec.
-	itimerspec timerSpec;
-	timerSpec.it_value.tv_sec = 1;
-	timerSpec.it_value.tv_nsec = 0;
-	timerSpec.it_interval.tv_sec = 1;
-	timerSpec.it_interval.tv_nsec = 0;
+	itimerspec oneSecondTimerSpec;
+	oneSecondTimerSpec.it_value.tv_sec = 1;
+	oneSecondTimerSpec.it_value.tv_nsec = 0;
+	oneSecondTimerSpec.it_interval.tv_sec = 1;
+	oneSecondTimerSpec.it_interval.tv_nsec = 0;
 
 	// Create and set the timer.
-	timer_create(CLOCK_REALTIME, &event, &timer);
-	timer_settime(timer, 0, &timerSpec, NULL);
+	timer_create(CLOCK_REALTIME, &event, &oneSecTimer);
+	timer_settime(oneSecTimer, 0, &oneSecondTimerSpec, NULL);
 
 	char ledMask = 0;
 	for(int i = 0; i < 3; i++) {
@@ -87,23 +87,12 @@ void* PulseScanner::run() {
 
 	out8(ledHandle, in8(ledHandle) & ~ledMask);
 
-	unsigned int cachedPulse = 0;
-
 	//while running...
 	while (!killThread) {
 
 		//so long as we have gotten pulses...keep flashing the LEDs for calculating (if applicable)
 		// and the calculating LED (if applicable)
 		flashLEDs(even);
-
-		//increment the clock count and distance traveled (since our poll period is half a second)
-		if (calcFlag && even == 0) {
-			clockCount += 1;
-			cachedPulse = distPulseCount;
-			distPulseCount = 0;
-
-			tripDistKM += (calcCircumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
-		}
 
 		usleep(PULSE_SCAN_POLL_RATE);
 		//periodically clear the interrupt here so it can recover if the frequency changes too quickly
@@ -272,4 +261,12 @@ void PulseScanner::calculate(sigval arg) {
 	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
 
 	self->speed = s;
+
+	if (self->calcFlag) {
+		self->clockCount += 1;
+		cachedPulse = self->distPulseCount;
+		self->distPulseCount = 0;
+
+		self->tripDistKM += (self->calcCircumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
+	}
 }
