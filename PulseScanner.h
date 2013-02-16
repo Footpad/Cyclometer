@@ -20,7 +20,7 @@
 #include "Thread.h"
 
 //the time to wait between calculations in seconds
-#define MAX_TIME_CALC (2)
+#define MAX_TIME_CALC (5)
 
 /* DAQs interrupt vector */
 #define DAQ_IRQ     (0x05)
@@ -96,8 +96,6 @@ public:
 
 	DistanceUnit getUnits();
 
-	uintptr_t getCmdHandle();
-
 	void scannerReset();
 
 	void toggleCalculate();
@@ -131,8 +129,11 @@ private:
 	//the units being used.
 	DistanceUnit units;
 
-	//the number of pulses received via interrupt used to calculate current speed (5 second reset)
-	volatile unsigned int speedPulseCount;
+	//the array of speedPulses we are looking at.
+	volatile unsigned int speedPulses[MAX_TIME_CALC];
+
+	//the index in the array to be writing to
+	volatile int speedPulseIndex;
 
 	//the number of pulses received via interrupt used to calculate trip distance (1 second when calculating)
 	volatile unsigned int distPulseCount;

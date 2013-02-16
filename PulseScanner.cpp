@@ -9,7 +9,9 @@
 
 const struct sigevent * PulseScanner::interruptReceived(void *arg, int id) {
 	PulseScanner* self = (PulseScanner*) arg;
-	self->speedPulseCount++;
+
+	//update the value at the current position in the buffer
+	self->speedPulses[self->speedPulseIndex]++;
 
 	if(self->calcFlag)
 		self->distPulseCount++;
@@ -32,13 +34,17 @@ void PulseScanner::scannerReset() {
 	circumference = MAX_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
-	speedPulseCount = 0;
+	speedPulseIndex = 0;
 	distPulseCount = 0;
 	speed = 0;
 	units = KM;
 	tripMode = TRIP_MANUAL;
 	calcFlag = false;
 	settingCir = false;
+
+	for(int i = 0; i < MAX_TIME_CALC; i++) {
+		speedPulses[i] = 0;
+	}
 }
 
 void* PulseScanner::run() {
@@ -65,9 +71,9 @@ void* PulseScanner::run() {
 
 	// Configure the timeout spec.
 	itimerspec timerSpec;
-	timerSpec.it_value.tv_sec = MAX_TIME_CALC;
+	timerSpec.it_value.tv_sec = 1;
 	timerSpec.it_value.tv_nsec = 0;
-	timerSpec.it_interval.tv_sec = MAX_TIME_CALC;
+	timerSpec.it_interval.tv_sec = 1;
 	timerSpec.it_interval.tv_nsec = 0;
 
 	// Create and set the timer.
@@ -155,7 +161,6 @@ int PulseScanner::getCircumference() {
 void PulseScanner::resetTripValues() {
 	tripDistKM = 0;
 	clockCount = 0;
-	speedPulseCount = 0;
 	distPulseCount = 0;
 }
 
@@ -166,10 +171,6 @@ void PulseScanner::toggleUnits() {
 
 DistanceUnit PulseScanner::getUnits() {
 	return units;
-}
-
-uintptr_t PulseScanner::getCmdHandle() {
-	return cmd_handle;
 }
 
 void PulseScanner::toggleTripMode() {
@@ -225,7 +226,12 @@ void PulseScanner::updateUnitsLED() {
 }
 
 void PulseScanner::flashLEDs(int even) {
-	if (speedPulseCount > 0) {
+	int cachedPulse = 0;
+	for(int i = 0; i < MAX_TIME_CALC; i++) {
+		cachedPulse += speedPulses[i];
+	}
+
+	if (cachedPulse > 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = true;
 		}
@@ -235,7 +241,7 @@ void PulseScanner::flashLEDs(int even) {
 		} else {
 			setWheelLED(false);
 		}
-	} else if (speedPulseCount == 0) {
+	} else if (cachedPulse == 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = false;
 		}
@@ -252,10 +258,18 @@ void PulseScanner::flashLEDs(int even) {
 void PulseScanner::calculate(sigval arg) {
 	PulseScanner* self = (PulseScanner*)arg.sival_ptr;
 
-	unsigned int cachedPulse = self->speedPulseCount;
-	self->speedPulseCount = 0;
+	//iterate over the available pulses and accumulate the total.
+	unsigned int cachedPulse = 0;
+	for(int i = 0; i < MAX_TIME_CALC; i++) {
+		cachedPulse += self->speedPulses[i];
+	}
+	//move to the next index and reset it (reset the oldest count in the array
+	self->speedPulseIndex = (self->speedPulseIndex + 1) % MAX_TIME_CALC;
+	self->speedPulses[self->speedPulseIndex] = 0;
 
+	//calculate the distance travelled in that time and the speed based on that distance.
 	double td = ((double)self->calcCircumference * cachedPulse * METERS_PER_CM) * KM_PER_METER;
 	double s = ((td) / MAX_TIME_CALC) * (SEC_PER_HOUR);
+
 	self->speed = s;
 }
