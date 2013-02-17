@@ -24,6 +24,8 @@ void EventCenter::sendEvent(Event event) {
 	}
 }
 
+// The instance of the EventCenter; contained in the scope of the module where
+// no one but EventCenter can see it.
 static EventCenter* defaultEventCenter = NULL;
 
 EventCenter* EventCenter::DefaultEventCenter() {

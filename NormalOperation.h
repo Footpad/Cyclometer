@@ -17,8 +17,18 @@ class NormalOperation: public State {
 public:
 	NormalOperation(StateParent* parent, StateContext* context, const char *initialState);
 
+	/**
+	 * Accepts the events this state reacts to.
+	 *
+	 * @param event - the event which has occurred in the system.
+	 */
 	void accept(Event event);
 
+	/**
+	 * Delegate to the child state (Distance, Time, Speed).
+	 *
+	 * @return the child states DisplayInfo
+	 */
 	DisplayInfo getData();
 };
 

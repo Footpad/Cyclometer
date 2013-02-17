@@ -42,8 +42,17 @@ public:
 	 */
 	StateParent* getParent();
 
+	/**
+	 * @return the StateContext this State belongs to
+	 */
 	StateContext* getStateContext();
 
+	/**
+	 * This is a default hook so StateContext objects can delegate to the state
+	 * with regards to DataProvider functionality.
+	 *
+	 * @return a DisplayInfo which creates a blank display.
+	 */
 	virtual DisplayInfo getData();
 
 protected:

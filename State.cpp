@@ -30,6 +30,7 @@ StateContext* State::getStateContext() {
 	return context;
 }
 
+// Return blank display data by default, override by concrete states.
 DisplayInfo State::getData() {
 	DisplayInfo info;
 

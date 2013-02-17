@@ -21,7 +21,7 @@ void Display::setDataProvider(DataProvider* next) {
 }
 
 void* Display::run() {
-	this->setPriority(50);
+	this->setPriority(DISPLAY_PRIORITY);
 
 	//carry on with display...
 	char cathWriteVal;

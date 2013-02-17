@@ -14,8 +14,20 @@ class DisplaySpeed: public State {
 public:
 	DisplaySpeed(StateParent* parent, StateContext* context);
 
+	/**
+	 * Accepts the events this state reacts to.
+	 *
+	 * @param event - the event which has occurred in the system.
+	 */
 	void accept(Event event);
 
+	/**
+	 * Returns speed in the form of "S.S" if the speed is less than 10 Units/Hour
+	 * or "SS" if greater than 10 units per hour. This is done for Current Speed and
+	 * Average speed and they are displayed as "S1S2"
+	 *
+	 * @return a formatted DisplayInfo for the speed.
+	 */
 	DisplayInfo getData();
 	
 private:

@@ -14,6 +14,11 @@ class SetCircumferenceIdle: public State {
 public:
 	SetCircumferenceIdle(StateParent* parent, StateContext* context);
 
+	/**
+	 * Accepts the events this state reacts to.
+	 *
+	 * @param event - the event which has occurred in the system.
+	 */
 	void accept(Event event);
 };
 

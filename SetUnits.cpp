@@ -18,6 +18,7 @@ SetUnits::SetUnits(StateParent* parent, StateContext* context) :
 State(parent, context) {}
 
 void SetUnits::accept(Event event) {
+	//make the transition to the proper state when specific events occur
 	if (event == evModeDepressed) {
 		parent->doTransition(new SetUnits(parent, context), toggleUnits);
 	} else if (event == evSetDepressed) {

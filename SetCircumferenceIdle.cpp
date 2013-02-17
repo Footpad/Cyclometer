@@ -12,6 +12,7 @@ SetCircumferenceIdle::SetCircumferenceIdle(StateParent* parent, StateContext* co
 State(parent, context) {}
 
 void SetCircumferenceIdle::accept(Event event) {
+	//only react to mode being depressed
 	if (event == evModeDepressed) {
 		parent->doTransition(new SetCircumferenceHeld(parent, context), NULL);
 	}

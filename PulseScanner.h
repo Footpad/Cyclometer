@@ -72,43 +72,125 @@ public:
 	 */
 	void* run();
 
+	/**
+	 * This is called when an interrupt is received on the DAQ; it increments
+	 * the proper fields to update current speed, distance etc. when appropriate.
+	 */
 	static const struct sigevent * interruptReceived(void *arg, int id);
 
+	/**
+	 * Returns the average speed; this is a function of distance()
+	 * and elapsedTime().
+	 *
+	 * @return the average speed attained while calculations were running.
+	 */
 	double averageSpeed();
 
+	/**
+	 * Returns the current speed of the bike; this is based on the number of
+	 * pulses over the last MAX_TIME_CALC seconds and the circumference of the wheel.
+	 *
+	 * @return the current speed of the bike
+	 */
 	double currentSpeed();
 
+	/**
+	 * Returns the distance traveled during the trip (while calculations are on).
+	 *
+	 * @return Distance traveled.
+	 */
 	double distance();
 
+	/**
+	 * Returns the time elapsed while calculations are on.
+	 *
+	 * @return the elapsed time
+	 */
 	unsigned int elapsedTime();
 
+	/**
+	 * Increments the current circumference of the wheel.
+	 */
 	void incrementCircumference();
 
+	/**
+	 * Returns either the current circumference or the currently
+	 * selected circumference to be set if increment has been called.
+	 *
+	 * @return the current circumference or the currently selected circumference
+	 */
 	int getCircumference();
 
+	/**
+	 * Saves the currently selected circumference to be used in calculations.
+	 */
 	void setCircumference();
 
+	/**
+	 * Resets all trip information.
+	 */
 	void resetTripValues();
 
+	/**
+	 * toggles the current mode from AUTO to MANUAL calculation modes or
+	 * vice versa.
+	 */
 	void toggleTripMode();
 
+	/**
+	 * Toggles the current units from KM to miles or vice versa.
+	 */
 	void toggleUnits();
 
+	/**
+	 * Returns the units currently in use.
+	 */
 	DistanceUnit getUnits();
 
+	/**
+	 * Resets all information on the scanner including circumference, units
+	 * and speed.
+	 */
 	void scannerReset();
 
+	/**
+	 * Toggles the calculate flag for MANUAL calculation mode.
+	 */
 	void toggleCalculate();
 
 private:
+	/**
+	 * This method is called at 1 second intervals by a timer to calculate
+	 * the current speed and accumulate time/distance when calculations are on.
+	 */
 	static void calculate(sigval arg);
 
+	/**
+	 * Sets the wheel LED on or off according to input
+	 *
+	 * @param high - true if the LED should be turned on.
+	 */
 	void setWheelLED(bool high);
 
+	/**
+	 * Sets the calculate LED either high, low or the bool value
+	 * depending on the current calculating mode of the scanner.
+	 *
+	 * @param high if the LED should be turned on.
+	 */
 	void setCalcLED(bool high);
 
+	/**
+	 * Sets the units in use LED based on the current value of the units variable
+	 */
 	void updateUnitsLED();
 
+	/**
+	 * Flashes the proper LEDs based on even. Even occurs every other cycle of a .5 second wait time.
+	 * This function also sets the calcFlag when in AUTO mode if pulses are detected or not.
+	 *
+	 * @param even - 0 if even, 1 otherwise
+	 */
 	void flashLEDs(int even);
 
 	//circumference in CM (used for calculations)

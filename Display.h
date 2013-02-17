@@ -18,10 +18,16 @@
 // The refresh rate of the screen in Hz
 #define NUM_ANODES (4)
 
+//This is the number of updates that should occur before polling the DataProvider again
 #define COUNT_INTERVAL (10)
 
+//This is the priorit the display thread should run at
+#define DISPLAY_PRIORITY (50)
+
+//This is how long to sleep for between updating each anode
 #define SLEEP_PERIOD (3500)
 
+//This is the cathode for the decimal point
 #define DP_CATHODE (0b00000001)
 
 // Defines the bits which must be set in order to produce the index's value on a 7 segment display
@@ -71,8 +77,13 @@ public:
 	void setDataProvider(DataProvider* next);
 
 private:
+	//The current DataProvider to get DisplayInfo from
 	DataProvider* data;
+
+	//The handle to the port the cathodes are connected to.
 	uintptr_t cathode;
+
+	//The handle to the port the anodes are connected to.
 	uintptr_t anode;
 
 	bool killThread;

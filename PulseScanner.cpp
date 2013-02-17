@@ -220,6 +220,7 @@ void PulseScanner::flashLEDs(int even) {
 		cachedPulse += speedPulses[i];
 	}
 
+	//if there have been pulses over the last 5 seconds...
 	if (cachedPulse > 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = true;
@@ -230,6 +231,7 @@ void PulseScanner::flashLEDs(int even) {
 		} else {
 			setWheelLED(false);
 		}
+	// else if there havent been any pulses...
 	} else if (cachedPulse == 0) {
 		if (tripMode == TRIP_AUTO) {
 			calcFlag = false;
@@ -262,6 +264,7 @@ void PulseScanner::calculate(sigval arg) {
 
 	self->speed = s;
 
+	//if we are calculating, accrue time and distance travelled.
 	if (self->calcFlag) {
 		self->clockCount += 1;
 		cachedPulse = self->distPulseCount;

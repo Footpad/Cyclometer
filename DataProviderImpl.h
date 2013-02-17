@@ -10,6 +10,9 @@
 
 #include "DataProvider.h"
 
+/**
+ * This is a fake object used to generate garbage data and to test the Display thread.
+ */
 class DataProviderImpl: public DataProvider {
 public:
 	DataProviderImpl(int val);

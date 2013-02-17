@@ -27,5 +27,6 @@ void SetCircumferenceHeld::entryAction() {
 }
 
 void SetCircumferenceHeld::timeout() {
+	//continue transitioning to this state to cause the entry action
 	parent->doTransition(new SetCircumferenceHeld(parent, context), NULL);
 }
