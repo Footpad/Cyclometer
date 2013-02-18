@@ -30,8 +30,8 @@ PulseScanner::~PulseScanner() {
 }
 
 void PulseScanner::scannerReset() {
-	calcCircumference = MAX_WHEEL_CIRCUMFERENCE;
-	circumference = MAX_WHEEL_CIRCUMFERENCE;
+	calcCircumference = INITIAL_WHEEL_CIRCUMFERENCE;
+	circumference = INITIAL_WHEEL_CIRCUMFERENCE;
 	tripDistKM = 0;
 	clockCount = 0;
 	speedPulseIndex = 0;

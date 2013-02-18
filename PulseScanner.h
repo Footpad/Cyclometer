@@ -47,6 +47,7 @@ const char LED_MASK[] =
 };
 
 // The range of wheel circumference values in centimeters.
+#define INITIAL_WHEEL_CIRCUMFERENCE 210
 #define MAX_WHEEL_CIRCUMFERENCE 220
 #define MIN_WHEEL_CIRCUMFERENCE 190
 
